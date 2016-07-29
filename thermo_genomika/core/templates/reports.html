@@ -1,0 +1,27 @@
+
+{% extends 'menu.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container">
+    <form  action="" method="get">
+        <div class="col-sm-3 col-sm-offset-4">
+            <label for="exampleInputEmail1">Local do Thermo</label>
+            <select name="local_pk" class="form-control">
+              {% for room in room_list %}
+                <option value={{room.pk}}>{{room.local}}</option>
+              {% endfor %}
+            </select>
+            <br>
+            <button type="submit" class="btn btn-primary btn btn-default btn-lg">Baixar CSV</button>
+            <br>
+            <br>
+        </div>
+
+    </form>
+</div>
+
+
+{% endblock %}

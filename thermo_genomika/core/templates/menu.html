@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+	<link href="{% static "navbar-static-top.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block nav-bar %}
+    
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'core:home' %}"><i class=""></i>Thermo Genomika</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+          <li class="active"><a href="{% url 'core:charts' %}">Thermo Info</a></li>
+          <li class="active"><a href="{% url 'core:reports' %}">Relatórios</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+   </nav>
+   <div class='container'>
+    {% for message in messages %}
+      <div class="alert alert-{{message.tags}}">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <center><strong>{{message}}</strong></center>
+      </div>
+    {% endfor %}
+   	{% block content %}
+
+  
+
+
+   	{% endblock %}
+   </div>
+
+{% endblock %}
