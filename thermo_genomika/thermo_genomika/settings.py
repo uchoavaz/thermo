@@ -83,12 +83,12 @@ WSGI_APPLICATION = 'thermo_genomika.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': config('EMAIL_ENGINE'),
-        'NAME': config('EMAIL_NAME'),
-        'USER': config('EMAIL_USER'),
-        'PASSWORD': config('EMAIL_PASSWORD'),
-        'HOST': config('EMAIL_HOST'),
-        'PORT': config('EMAIL_PORT'),
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
 
