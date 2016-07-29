@@ -10,7 +10,7 @@ def delete_old_records(ip):
     log = 'No old records deleted'
     days_to_delete = AllowedAddress.objects.get(ip=ip).days_to_delete
 
-    if days_to_delete == 0:
+    if days_to_delete > 0:
         current_tz = timezone.get_current_timezone().normalize(timezone.now())
         days_ago = (current_tz - datetime.timedelta(days=days_to_delete))
         thermo_info = ThermoInfo.objects.filter(
