@@ -1,0 +1,56 @@
+{% extends 'menu.html' %}
+{% load static %}
+
+
+{% block content %}
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tags fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div>Thermos Cadastrados</div>
+                                    <div class="huge">{{registered_thermos}}</div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-bar-chart fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div> Total de Temperaturas Aferidas</div>
+                                    <div class="huge">{{total_temp}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-exclamation-triangle fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div>Aferições não permitidas</div>
+                                    <div class="huge">{{qtd_not_allowed_temp}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+{% endblock %}
