@@ -36,13 +36,12 @@ class AllowedAddressAdmin(admin.ModelAdmin):
 
 class ThermoLogAdmin(admin.ModelAdmin):
     search_fields = [
-        'request', 'log', 'device_ip', 'capture_date', 'ocurred_error'
+        'request', 'log', 'device_ip', 'capture_date'
     ]
     list_display = (
         'request',
         'log',
         'device_ip',
-        'ocurred_error',
         'capture_date',
     )
 

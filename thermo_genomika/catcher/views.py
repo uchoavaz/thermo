@@ -16,7 +16,7 @@ class CatcherView(TemplateView):
         log = ''
         request = self.request
         ip = get_ip(request)
-        error = False
+        error = True
 
         try:
             temperature = request.GET.get('temp')
@@ -42,21 +42,21 @@ class CatcherView(TemplateView):
                 log = log + ", " + "Ip not active"
         except ObjectDoesNotExist as err:
             log = log + ", " + str(err)
-            error = True
+            error = False
 
         except TypeError as err:
             log = log + ", " + str(err)
-            error = True
+            error = False
 
         except Exception as err:
             log = log + ", " + ("Error:" + str(err))
-            error = True
+            error = False
 
         ThermoLog.objects.create(
             request=request,
             log=log,
             device_ip=ip,
-            ocurred_error=error
+            all_worked=error
         )
         return HttpResponse('')
 
