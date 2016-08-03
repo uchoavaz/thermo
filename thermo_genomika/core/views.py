@@ -4,7 +4,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.views.generic import ListView
-from django.views.generic import View
 from catcher.models import ThermoInfo
 from catcher.models import AllowedAddress
 from core.models import SystemInfo
@@ -214,21 +213,32 @@ class ReportView(SystemInfoView, ListView):
             'attachment; filename="{0}_thermo_report_{1}.csv"'.format(
                 file_name, datetime.now().strftime("%d_%m_%Y"))
 
-        writer = csv.writer(response, delimiter='|')
+        writer = csv.writer(response, delimiter=',')
         header = [
             ThermoInfo._meta.get_field("temperature").verbose_name.title(),
+            AllowedAddress._meta.get_field(
+                "local").verbose_name.title(),
+            AllowedAddress._meta.get_field("ip").verbose_name.title(),
+            AllowedAddress._meta.get_field(
+                "max_temperature").verbose_name.title(),
+            AllowedAddress._meta.get_field(
+                "measure").verbose_name.title(),
             ThermoInfo._meta.get_field("allowed_temp").verbose_name.title(),
-            ThermoInfo._meta.get_field("device_ip").verbose_name.title(),
             ThermoInfo._meta.get_field("capture_date").verbose_name.title()
         ]
         writer.writerow(header)
 
         for line in queryset:
+            temperature = timezone.get_current_timezone().normalize(
+                line.capture_date)
             writer.writerow([
                 str(line.temperature),
+                line.device_ip.local,
+                line.device_ip.ip,
+                line.device_ip.max_temperature,
+                line.device_ip.get_measure_display().encode('ascii', 'ignore'),
                 line.allowed_temp,
-                line.device_ip,
-                timezone.get_current_timezone().normalize(line.capture_date)
+                temperature.strftime('%d-%m-%Y %H:%M')
             ])
         return response
 
