@@ -207,11 +207,11 @@ class ReportView(SystemInfoView, ListView):
     template_name = "reports.html"
     model = ThermoInfo
 
-    def generate_csv(self, file_name, queryset):
+    def generate_csv(self, file_name, date_str, queryset):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = \
-            'attachment; filename="{0}_thermo_report_{1}.csv"'.format(
-                file_name, datetime.now().strftime("%d_%m_%Y"))
+            'attachment; filename="{0}_thermo_report{1}.csv"'.format(
+                file_name, date_str)
 
         writer = csv.writer(response, delimiter=',')
         header = [
@@ -259,14 +259,23 @@ class ReportView(SystemInfoView, ListView):
                 allowed_address = AllowedAddress.objects.get(pk=int(local_pk))
                 queryset = self.get_queryset().filter(
                     device_ip=allowed_address)
+                start_date_str = ''
+                end_date_str = ''
+                date_str = ''
 
                 if start_date != '':
                     queryset = queryset.filter(capture_date__gte=start_date)
+                    start_date_str = start_date.strftime('%d_%m_%Y')
                 if end_date != '':
                     queryset = queryset.filter(capture_date__lte=end_date)
+                    end_date_str = end_date.strftime('%d_%m_%Y')
+
+                if start_date_str != '' or end_date_str != '':
+                    date_str = "_" + start_date_str + "__to__" + end_date_str
                 queryset = queryset.order_by('capture_date')
 
-                return self.generate_csv(allowed_address.local, queryset)
+                return self.generate_csv(
+                    allowed_address.local, date_str, queryset)
             except (ValueError, ObjectDoesNotExist):
                 messages.error(
                     self.request, 'Local inexistente')
