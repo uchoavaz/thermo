@@ -78,8 +78,8 @@ class ThermoLog(models.Model):
         verbose_name="Device IP", max_length=15)
     capture_date = models.DateTimeField(
         verbose_name="Capture Date", default=timezone.now)
-    ocurred_error = models.BooleanField(
-        verbose_name='Ocurred error ?', default=False)
+    all_worked = models.BooleanField(
+        verbose_name='All worked ?', default=False)
 
     class Meta:
         verbose_name = (u'Thermo Log')
