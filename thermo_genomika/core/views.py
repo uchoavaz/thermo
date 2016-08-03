@@ -233,14 +233,27 @@ class ReportView(SystemInfoView, ListView):
         return response
 
     def dispatch(self, request, *args, **kwargs):
+        request = self.request.GET
 
         if self.request.GET:
             local_pk = self.request.GET.get('local_pk')
+            start_date = request.get('start_date')
+            end_date = request.get('end_date')
+
             try:
+                get = correct_date_get_request(
+                    self.request, start_date, end_date)
+                start_date = get['start_date']
+                end_date = get['end_date']
 
                 allowed_address = AllowedAddress.objects.get(pk=int(local_pk))
                 queryset = self.get_queryset().filter(
                     device_ip=allowed_address)
+
+                if start_date != '':
+                    queryset = queryset.filter(capture_date__gte=start_date)
+                if end_date != '':
+                    queryset = queryset.filter(capture_date__lte=end_date)
                 queryset = queryset.order_by('capture_date')
 
                 return self.generate_csv(allowed_address.local, queryset)
