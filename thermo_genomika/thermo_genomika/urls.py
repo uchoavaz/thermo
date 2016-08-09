@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^catcher', include('catcher.urls', namespace='catcher')),
     url(r'^', include('core.urls', namespace='core')),
+    url(r'^auth/', include('account.urls', namespace='account')),
 ]
