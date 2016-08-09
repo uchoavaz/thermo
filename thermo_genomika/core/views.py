@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.core.exceptions import ObjectDoesNotExist
+from account.views import LoginRequiredView
 from django.http import HttpResponse
 from django.views.generic import ListView
 from catcher.models import ThermoInfo
@@ -62,7 +63,7 @@ class SystemInfoView(ListView):
         return context
 
 
-class HomeView(SystemInfoView, ListView):
+class HomeView(LoginRequiredView, SystemInfoView, ListView):
     template_name = "home.html"
     model = ThermoInfo
 
@@ -75,7 +76,7 @@ class HomeView(SystemInfoView, ListView):
         return context
 
 
-class ChartsView(SystemInfoView, ListView):
+class ChartsView(LoginRequiredView, SystemInfoView, ListView):
     template_name = "charts.html"
     model = ThermoInfo
 
@@ -203,7 +204,7 @@ class ChartsView(SystemInfoView, ListView):
         return temp_list
 
 
-class ReportView(SystemInfoView, ListView):
+class ReportView(LoginRequiredView, SystemInfoView, ListView):
     template_name = "reports.html"
     model = ThermoInfo
 

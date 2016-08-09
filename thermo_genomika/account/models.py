@@ -20,12 +20,12 @@ class ThermoUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, email,
-                         password):
+                         is_staff, is_superuser, password):
         user = self.create_user(username=username,
                                 email=email,
                                 password=password)
-        user.is_staff = True
-        user.is_superuser = True
+        user.is_staff = is_staff
+        user.is_superuser = is_superuser
 
         user.save()
         return user
@@ -66,7 +66,7 @@ class ThermoUser(AbstractBaseUser, PermissionsMixin):
     objects = ThermoUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'is_superuser', 'is_staff']
 
     class Meta:
         verbose_name = (u'User')
