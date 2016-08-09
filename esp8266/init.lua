@@ -7,36 +7,35 @@ function read_analog ()
   temp = "temp="..a
   var="GET /catcher?"..temp.." HTTP/1.1\r\nHost: 172.16.225.18\r\nConnection: keep-alive\r\nAccept: */*\r\n\r\n"
   conn:send(var)
+  print(a)
+  gpio.write(3, gpio.HIGH)
+  gpio.write(3, gpio.LOW)
 end
 
 
-     print("Ready to Set up wifi mode")
-     wifi.setmode(wifi.STATION)
-     gpio.mode(2, gpio.OUTPUT)
+print("Ready to Set up wifi mode")
+wifi.setmode(wifi.STATION)
+gpio.mode(2, gpio.OUTPUT)
+gpio.mode(3, gpio.OUTPUT)
+gpio.write(3, gpio.LOW)
 
-     ssid = "GNMK-ADMIN1"
-     psw = "g3n3t1c@"
-     ip = "172.16.225.190"
-     mask = "255.255.255.0"
-     gate = "172.16.225.1"
-     wifi.sta.config(ssid, psw)
-     wifi.sta.setip({ip=ip,netmask=mask,gateway=gate})
-     wifi.sta.connect()
-     local cnt = 0
-     tmr.alarm(3, 1000, 1, function() 
-         if (wifi.sta.getip() == nil) and (cnt < 20) then 
-         print("Trying Connect to Router, Waiting...")
-         cnt = cnt + 1 
-         else 
-         tmr.stop(3)
-         if (cnt < 20) then 
-            print("Config done, IP is "..wifi.sta.getip())
-            gpio.write(2, gpio.HIGH)
-            tmr.alarm(0, 300000, 1, read_analog)      
-         else print("Wifi setup time more than 20s, Please verify wifi.sta.config() function. Then re-download the file.")
-         end
-             cnt = nil;
-             collectgarbage();
-         end 
-          end)
 
+ssid = "GNMK-ADMIN1"
+psw = "g3n3t1c@"
+ip = "172.16.225.190"
+mask = "255.255.255.0"
+gate = "172.16.225.1"
+
+wifi.sta.config(ssid, psw)
+wifi.sta.setip({ip=ip,netmask=mask,gateway=gate})
+wifi.sta.connect()
+local cnt = 0
+tmr.alarm(0, 2000, 1, function()
+   if (wifi.sta.status() == 5) then
+      print("Config done, IP is "..wifi.sta.getip())
+      gpio.write(2, gpio.HIGH)
+      tmr.alarm(0, 300000, 1, read_analog)
+   else
+      print("Trying to connect")
+   end
+  end)
