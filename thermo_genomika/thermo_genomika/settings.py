@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'catcher',
     'mailer',
     'core',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE_CLASSES = [

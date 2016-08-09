@@ -1,6 +1,7 @@
 
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
 from django.contrib.auth import authenticate
@@ -9,6 +10,8 @@ from django.shortcuts import redirect
 from account.models import ThermoUser
 from django.contrib import messages
 from django.utils import timezone
+from .forms import PasswordForm
+
 
 def login(request):
     template_name = 'login.html'
@@ -47,3 +50,23 @@ def logout(request):
 
 class LoginRequiredView(LoginRequiredMixin):
     login_url = reverse_lazy("account:login")
+
+
+class PasswordView(LoginRequiredView, FormView):
+    template_name = 'password.html'
+    form_class = PasswordForm
+    success_url = reverse_lazy('core:home')
+
+    def get_form(self, form_class):
+        user = ThermoUser.objects.get(email=self.request.user.email)
+        return form_class(instance=user, **self.get_form_kwargs())
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.save()
+        messages.success(
+            self.request,
+            'Sua senha foi alterada! Entre no sistema com sua nova senha')
+        return super(PasswordView, self).form_valid(form)
+
+password = PasswordView.as_view()
