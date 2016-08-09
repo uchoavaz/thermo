@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 from django.core.urlresolvers import reverse_lazy
 from django.contrib import auth
 from django.shortcuts import redirect
-from accounts.models import ThermoUser
+from account.models import ThermoUser
 from django.contrib import messages
 
 
