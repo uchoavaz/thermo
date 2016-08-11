@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^catcher', include('catcher.urls', namespace='catcher')),
     url(r'^', include('core.urls', namespace='core')),
     url(r'^auth/', include('account.urls', namespace='account')),
+    url(r'^reports/', include('reports.urls', namespace='reports')),
 ]

@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.shortcuts import redirect
-from account.models import ThermoUser
+from .models import ThermoUser
 from django.contrib import messages
 from django.utils import timezone
 from .forms import PasswordForm

@@ -1,8 +1,8 @@
 
 # -*- coding: utf-8 -*-
-from mailer.models import MailLog
-from mailer.models import Recipient
-from mailer.mail import send_mail
+from .models import MailLog
+from .models import Recipient
+from .mail import send_mail
 
 
 def warn_mail(thermo_info):

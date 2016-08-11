@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.views.generic import ListView
 from catcher.models import ThermoInfo
 from catcher.models import AllowedAddress
-from core.models import SystemInfo
+from .models import SystemInfo
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Max
