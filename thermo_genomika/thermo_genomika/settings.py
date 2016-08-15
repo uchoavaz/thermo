@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'mailer',
     'core',
     'reports',
+    'checklist',
     'widget_tweaks',
 ]
 

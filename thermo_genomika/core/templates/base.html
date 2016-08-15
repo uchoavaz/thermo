@@ -47,6 +47,7 @@
     {% endblock %}
 
 
+
     <script src="{% static "assets/js/ie-emulation-modes-warning.js" %}"></script>
 
   </head>
@@ -79,6 +80,19 @@
     
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                language: {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json"
+                },
+                responsive: true
+        });
+    });
+
+
+    </script>
 
     <script>
          $(function() {

@@ -1,0 +1,100 @@
+{% extends 'menu.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+<style type="text/css">
+#not_audited{
+    background-color: red;
+}
+</style>
+
+<div class="container">
+    <form  action="" method="get">
+        <div class="col-sm-3 col-sm-offset-4">
+            <label for="exampleInputEmail1">Local do Thermo</label>
+            <select name="local_pk" class="form-control">
+              {% for room in room_list %}
+                <option value={{room.pk}}>{{room.local}}</option>
+              {% endfor %}
+            </select>
+            <label for="exampleInputEmail1">Data início</label>
+            <input type="text" name='start_date' class="form-control" id="start_date" placeholder="{{start_date}}">
+            <label for="exampleInputEmail1">Data fim</label>
+            <input type="text" name='end_date' class="form-control" id="end_date" placeholder="{{end_date}}">
+            <br>
+            <button type="submit" class="btn btn-primary btn btn-default btn-lg">Listar</button>
+            <br>
+            <br>
+        </div>
+
+    </form>
+</div>
+<hr>
+
+{% if object_list %}
+<div class="container">
+
+    <div class="panel-body">
+    <form method="get">
+
+        <div class="dataTable_wrapper">
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <thead>
+                    <tr>
+                        <th>Auditado?</th>
+                        <th>Dia</th>
+                        <th>Local</th>
+                        <th>Temp. Média</th>
+                        <th>Temp. Máx.</th>
+                        <th>Temp. Min</th>
+                        <th>Hora Temp. Min</th>
+                        <th>Hora Temp. Máx</th>
+                        <th>Aferições</th>
+                        <th>Temps. não perm.</th>
+                        <th>Reponsável</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for checklist in object_list %}
+                    <tr class="odd gradeX" {% if not checklist.is_checked %} id="not_audited" {% endif%}>
+                        {% if checklist.is_checked %}
+                            <td><center><input name="pk" value="{{checklist.pk}}" type="checkbox" checked="checked" disabled></center></td>
+                        {%else%}
+                            <td><center><input name="pk" value="{{checklist.pk}}" type="checkbox"></center></td>
+                        {% endif %}
+                        <td>{{checklist.date|date:"d/m/Y"}}</td>
+                        <td>{{checklist.device.local}}</td>
+                        <td>{{checklist.avg_temp}} {{checklist.device.get_measure_display}}</td>
+                        <td>{{checklist.max_temp}} {{checklist.device.get_measure_display}}</td>
+                        <td>{{checklist.min_temp}} {{checklist.device.get_measure_display}}</td>
+                        <td>{{checklist.date_max_temp|date:"H:i"}}</td>
+                        <td>{{checklist.date_min_temp|date:"H:i"}}</td>
+                        <td>{{checklist.admeasurements}}</td>
+                        <td>{{checklist.temp_not_allwd}}</td>
+                        {% if checklist.responsible %}
+                            <td>{{checklist.responsible}}</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    <button type="submit" class="btn btn-primary btn btn-default btn-lg">Salvar</button>
+        <!-- /.table-responsive -->
+    </div>
+    </form>
+
+    <!-- /.panel-body -->
+   </div>
+</div>
+{% else %}
+<center>{{result_message}}</center>
+{% endif %}
+{% endblock %}

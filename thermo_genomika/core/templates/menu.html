@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load current from navigation %}
+
+
 
 {% block style %}
 	<link href="{% static "navbar-static-top.css" %}" rel="stylesheet">
@@ -20,8 +23,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-          <li class="active"><a href="{% url 'core:charts' %}">Thermo Info</a></li>
-          <li class="active"><a href="{% url 'reports:reports' %}">Relatórios</a></li>
+          <li class="{% current 'core:charts' '' %}"><a href="{% url 'core:charts' %}">Thermo Info</a></li>
+          <li class="{% current 'checklist:checklist' '' %}"><a href="{% url 'checklist:checklist' %}">Auditoria</a></li>
+          <li class="{% current 'reports:reports' '' %}"><a href="{% url 'reports:reports' %}">Relatórios</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown active">

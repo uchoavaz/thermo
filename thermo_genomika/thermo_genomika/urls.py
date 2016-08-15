@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^', include('core.urls', namespace='core')),
     url(r'^auth/', include('account.urls', namespace='account')),
     url(r'^reports/', include('reports.urls', namespace='reports')),
+    url(r'^checklist', include('checklist.urls', namespace='checklist')),
 ]
