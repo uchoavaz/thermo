@@ -8,7 +8,8 @@ from .models import ThermoLog
 from ipware.ip import get_ip
 from mailer.tasks import warn_mail
 from .tasks import delete_old_records
-
+from checklist.checklist_generator import CheckListGenerator
+from django.utils import timezone
 
 class CatcherView(TemplateView):
 
@@ -30,8 +31,12 @@ class CatcherView(TemplateView):
 
                 thermo_info = ThermoInfo.objects.create(
                     temperature=temperature,
-                    device_ip=allowed_address
+                    device_ip=allowed_address,
+                    capture_date=timezone.now()
                 )
+                checklist = CheckListGenerator(temperature, timezone.now())
+                checklist.generate()
+
                 log = log + ", "'Data saved with success'
                 email_log = warn_mail(
                     thermo_info)
