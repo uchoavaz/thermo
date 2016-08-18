@@ -8,7 +8,7 @@ from django.utils import timezone
 
 
 class DeviceChecklist(models.Model):
-    date = models.DateField(verbose_name="Data", default=timezone.now())
+    date = models.DateField(verbose_name="Date", default=timezone.now())
     device = models.ForeignKey(
         AllowedAddress,
         verbose_name=u"Device",
@@ -30,7 +30,10 @@ class DeviceChecklist(models.Model):
     temp_not_allwd = models.IntegerField(
         verbose_name="Temperatures not allowed",
         default=0)
-
+    check_date = models.DateField(
+        verbose_name="Check date",
+        null=True,
+        blank=True)
 
     class Meta:
         verbose_name = (u'Device Checklist')

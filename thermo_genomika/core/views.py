@@ -13,7 +13,6 @@ from django.utils import timezone
 from django.db.models import Max
 from django.db.models import Min
 from datetime import datetime
-import csv
 
 
 def correct_date_get_request(request, start_date, end_date):
@@ -39,8 +38,6 @@ def correct_date_get_request(request, start_date, end_date):
             end_date = ''
     if start_date != '' and end_date != '' \
             and (end_date - start_date).days < 0:
-            start_date = ''
-            end_date = ''
             raise Exception(
                 u'Data fim maior que a data início')
 

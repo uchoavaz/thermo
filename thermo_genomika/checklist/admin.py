@@ -13,7 +13,8 @@ class DeviceChecklistAdmin(admin.ModelAdmin):
         'is_checked',
         'date',
         'temp_not_allwd',
-        'admeasurements'
+        'admeasurements',
+        'check_date'
     ]
     list_display = (
         'date',
@@ -26,7 +27,8 @@ class DeviceChecklistAdmin(admin.ModelAdmin):
         'responsible',
         'is_checked',
         'temp_not_allwd',
-        'admeasurements'
+        'admeasurements',
+        'check_date'
     )
 
 admin.site.register(DeviceChecklist, DeviceChecklistAdmin)
