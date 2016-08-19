@@ -40,8 +40,8 @@ class CheckListGenerator():
                 min_temp=thermo_report['min_temp'],
                 date_max_temp=thermo_report['date_max_temp'],
                 date_min_temp=thermo_report['date_min_temp'],
-                admeasurements=thermo_report['temp_not_allwd'],
-                temp_not_allwd=thermo_report['admeasurements'],
+                admeasurements=thermo_report['admeasurements'],
+                temp_not_allwd=thermo_report['temp_not_allwd'],
             )
             self.log = 'Novo checklist criado'
 
