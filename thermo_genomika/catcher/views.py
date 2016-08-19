@@ -38,16 +38,16 @@ class CatcherView(TemplateView):
 
                 log = log + ", "'Data saved with success'
 
-                checklist = CheckListGenerator(
-                    allowed_address, temperature, timezone.now())
-                checklist.generate()
-                log = log + ", " + checklist.checklist_log()
-
                 email_log = warn_mail(
                     thermo_info)
                 log = log + ", " + email_log
                 delete_log = delete_old_records(ip)
                 log = log + ", " + delete_log
+
+                checklist = CheckListGenerator(
+                    allowed_address, temperature, timezone.now())
+                checklist.generate()
+                log = log + ", " + checklist.checklist_log()
             else:
                 log = log + ", " + "Ip not active"
         except ObjectDoesNotExist as err:

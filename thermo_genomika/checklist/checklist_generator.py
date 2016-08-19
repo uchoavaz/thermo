@@ -19,7 +19,7 @@ class CheckListGenerator():
         self.date = date
 
     def check_db(self, device, temp, date):
-        thermo_report = self.get_thermo_report()
+        thermo_report = self.get_thermo_report(date)
         try:
             check = DeviceChecklist.objects.get(date=date)
             check.avg_temp = thermo_report['avg_temp']
@@ -45,8 +45,12 @@ class CheckListGenerator():
             )
             self.log = 'Novo checklist criado'
 
-    def get_thermo_report(self):
-        thermo_info = ThermoInfo.objects.all()
+    def get_thermo_report(self, date):
+        thermo_info = ThermoInfo.objects.filter(
+            capture_date__day=date.day,
+            capture_date__month=date.month,
+            capture_date__year=date.year
+        )
 
         info = {}
         avg_temp = str(thermo_info.aggregate(
