@@ -16,6 +16,8 @@ class ChecklistView(LoginRequiredView, SystemInfoView, ListView):
     model = DeviceChecklist
     start_date = ''
     end_date = ''
+    local_pk = ''
+    local_name = ''
 
     def get(self, request, *args, **kwargs):
         saved = False
@@ -43,6 +45,8 @@ class ChecklistView(LoginRequiredView, SystemInfoView, ListView):
         context['room_list'] = AllowedAddress.objects.all().distinct('local')
         context['start_date'] = self.start_date
         context['end_date'] = self.end_date
+        context['local_pk'] = self.local_pk
+        context['local_name'] = self.local_name
         if self.get_queryset() is not None:
             if self.get_queryset().count() == 0:
                 context['result_message'] = 'Sem resultados encontrados'
@@ -68,6 +72,9 @@ class ChecklistView(LoginRequiredView, SystemInfoView, ListView):
                         self.start_date = start_date
                     if end_date is not None:
                         self.end_date = end_date
+                    if local_pk is not None:
+                        self.local_pk = local_pk
+                        self.local_name = allowed_address.local
                     return queryset.order_by('date')
 
         except (ValueError, ObjectDoesNotExist):

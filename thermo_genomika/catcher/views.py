@@ -11,6 +11,7 @@ from .tasks import delete_old_records
 from checklist.checklist_generator import CheckListGenerator
 from django.utils import timezone
 
+
 class CatcherView(TemplateView):
 
     def get(self, request, *args, **kwargs):
@@ -34,10 +35,14 @@ class CatcherView(TemplateView):
                     device_ip=allowed_address,
                     capture_date=timezone.now()
                 )
-                checklist = CheckListGenerator(temperature, timezone.now())
-                checklist.generate()
 
                 log = log + ", "'Data saved with success'
+
+                checklist = CheckListGenerator(
+                    allowed_address, temperature, timezone.now())
+                checklist.generate()
+                log = log + ", " + checklist.checklist_log()
+
                 email_log = warn_mail(
                     thermo_info)
                 log = log + ", " + email_log

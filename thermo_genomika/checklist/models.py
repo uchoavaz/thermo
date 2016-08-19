@@ -8,7 +8,8 @@ from django.utils import timezone
 
 
 class DeviceChecklist(models.Model):
-    date = models.DateField(verbose_name="Date", default=timezone.now())
+    date = models.DateField(
+        verbose_name="Date", default=timezone.now(), unique=True)
     device = models.ForeignKey(
         AllowedAddress,
         verbose_name=u"Device",

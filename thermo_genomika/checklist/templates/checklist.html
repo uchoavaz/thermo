@@ -1,7 +1,6 @@
 {% extends 'menu.html' %}
-
 {% load static %}
-
+{% load local_selected %}
 
 {% block content %}
 
@@ -16,8 +15,10 @@
         <div class="col-sm-3 col-sm-offset-4">
             <label for="exampleInputEmail1">Local do Thermo</label>
             <select name="local_pk" class="form-control">
+                
               {% for room in room_list %}
-                <option value={{room.pk}}>{{room.local}}</option>
+
+                <option {% get_selected local_pk room.pk%} value={{room.pk}}>{{room.local}}</option>
               {% endfor %}
             </select>
             <label for="exampleInputEmail1">Data início</label>
@@ -48,8 +49,8 @@
                         <th>Temp. Média</th>
                         <th>Temp. Máx.</th>
                         <th>Temp. Min</th>
-                        <th>Hora Temp. Min</th>
                         <th>Hora Temp. Máx</th>
+                        <th>Hora Temp. Min</th>
                         <th>Aferições</th>
                         <th>Temps. não perm.</th>
                         <th>Reponsável</th>
