@@ -5,6 +5,7 @@ from catcher.models import ThermoInfo
 from django.db.models import Max
 from django.db.models import Min
 from django.db.models import Avg
+from django.utils import timezone
 
 
 class CheckListGenerator():
@@ -19,9 +20,9 @@ class CheckListGenerator():
         self.date = date
 
     def check_db(self, device, temp, date):
-        thermo_report = self.get_thermo_report(date)
+        thermo_report = self.get_thermo_report(date, device)
         try:
-            check = DeviceChecklist.objects.get(date=date)
+            check = DeviceChecklist.objects.get(date=date, device=device)
             check.avg_temp = thermo_report['avg_temp']
             check.max_temp = thermo_report['max_temp']
             check.min_temp = thermo_report['min_temp']
@@ -45,13 +46,14 @@ class CheckListGenerator():
             )
             self.log = 'Novo checklist criado'
 
-    def get_thermo_report(self, date):
+    def get_thermo_report(self, date, device):
+        current_tz = timezone.get_current_timezone().normalize(date)
         thermo_info = ThermoInfo.objects.filter(
-            capture_date__day=date.day,
-            capture_date__month=date.month,
-            capture_date__year=date.year
+            device_ip=device,
+            capture_date__day=current_tz.day,
+            capture_date__month=current_tz.month,
+            capture_date__year=current_tz.year,
         )
-
         info = {}
         avg_temp = str(thermo_info.aggregate(
             Avg('temperature'))['temperature__avg'])

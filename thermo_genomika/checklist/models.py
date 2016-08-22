@@ -9,7 +9,7 @@ from django.utils import timezone
 
 class DeviceChecklist(models.Model):
     date = models.DateField(
-        verbose_name="Date", default=timezone.now(), unique=True)
+        verbose_name="Date", default=timezone.now())
     device = models.ForeignKey(
         AllowedAddress,
         verbose_name=u"Device",
@@ -37,5 +37,6 @@ class DeviceChecklist(models.Model):
         blank=True)
 
     class Meta:
+        unique_together = ('date', 'device',)
         verbose_name = (u'Device Checklist')
         verbose_name_plural = (u"Devices Checklists")
