@@ -24,7 +24,7 @@ def send_mail_template(
 
 
 def send_mail(date, local, temperatura, situation, recipient):
-    date = date.strftime('%Y-%d-%m   %H:%M')
+    date = date.strftime('%d-%m-%Y   %H:%M')
     subject = "Contato Thermo Genomika - {0} - Local: {1} - {2}".format(
         situation, local, date)
     context = {

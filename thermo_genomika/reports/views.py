@@ -1,5 +1,7 @@
 
 # -*- coding: utf-8 -*-
+import subprocess
+import tempfile
 from django.core.exceptions import ObjectDoesNotExist
 from core.views import SystemInfoView
 from core.views import correct_date_get_request
@@ -10,11 +12,14 @@ from catcher.models import ThermoInfo
 from catcher.models import AllowedAddress
 from django.contrib import messages
 from django.utils import timezone
+from checklist.models import DeviceChecklist
+from fdfgen import forge_fdf
 import csv
+import os
 
 
-class ReportView(LoginRequiredView, SystemInfoView, ListView):
-    template_name = "reports.html"
+class FullReportView(LoginRequiredView, SystemInfoView, ListView):
+    template_name = "full_report.html"
     model = ThermoInfo
 
     def generate_csv(self, file_name, date_str, queryset):
@@ -96,17 +101,123 @@ class ReportView(LoginRequiredView, SystemInfoView, ListView):
                 messages.error(
                     self.request, err)
             return super(
-                ReportView, self).dispatch(
+                FullReportView, self).dispatch(
                 self.request, *args, **kwargs)
 
         else:
             return super(
-                ReportView, self).dispatch(
+                FullReportView, self).dispatch(
                 self.request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(ReportView, self).get_context_data(**kwargs)
+        context = super(FullReportView, self).get_context_data(**kwargs)
         context['room_list'] = AllowedAddress.objects.all().distinct('local')
         return context
 
-report = ReportView.as_view()
+
+class AuditedReportView(LoginRequiredView, SystemInfoView, ListView):
+    template_name = "audited_report.html"
+    model = DeviceChecklist
+
+    def dispatch(self, request, *args, **kwargs):
+
+        request = self.request.GET
+
+        if self.request.GET:
+            local_pk = self.request.GET.get('local_pk')
+            start_date = request.get('start_date')
+            end_date = request.get('end_date')
+
+            try:
+                get = correct_date_get_request(
+                    self.request, start_date, end_date)
+                start_date = get['start_date']
+                end_date = get['end_date']
+                if end_date.year - start_date.year != 0:
+                    raise Exception(
+                        "Relatório não pode estar em anos diferentes !")
+
+                if end_date.month - start_date.month != 0:
+                    raise Exception(
+                        "Relatório não pode estar em meses diferentes !")
+
+                allowed_address = AllowedAddress.objects.get(pk=int(local_pk))
+
+                return self.pdf(allowed_address, start_date, end_date)
+
+            except (ValueError, ObjectDoesNotExist):
+                messages.error(
+                    self.request, 'Local inexistente')
+            except TypeError:
+                messages.error(
+                    self.request, 'Insira um Local')
+            except AttributeError:
+                messages.error(
+                    self.request, 'Insira uma data de inicio e fim')
+            except Exception as err:
+                messages.error(
+                    self.request, err)
+            return super(
+                AuditedReportView, self).dispatch(
+                self.request, *args, **kwargs)
+
+        else:
+            return super(
+                AuditedReportView, self).dispatch(
+                self.request, *args, **kwargs)
+
+    def pdf(self, device, start_date, end_date):
+        queryset = self.get_pdf_queryset(device, start_date, end_date)
+        page_pdf_memory_data = tempfile.NamedTemporaryFile()
+        fields = []
+        count = 1
+
+        for field in queryset:
+            fields.append(('day{0}'.format(count)))
+            fields.append(('local{0}'.format(count),))
+            fields.append(('avg_temp{0}'.format(count),))
+            fields.append(('max_temp{0}'.format(count),))
+            fields.append(('min_temp{0}'.format(count),))
+            fields.append(('max_temp_hour{0}'.format(count),))
+            fields.append(('min_temp_hour{0}'.format(count),))
+            fields.append(('admeas{0}'.format(count),))
+            fields.append(('temp_not_allwd{0}'.format(count),))
+            fields.append(('respo{0}'.format(count),))
+            fields.append(('check_date{0}'.format(count),))
+            count = count + 1
+        inmemory_file = self.generate_pdf(fields, page_pdf_memory_data)
+
+        response = HttpResponse(content_type='text/pdf')
+        inmemory_file.seek(0)
+        response.write(inmemory_file.read())
+        response['Content-Disposition'] = 'attachment; filename=teste.pdf; charset=utf-8'
+
+        return response
+
+    def generate_pdf(self, fields, page_pdf_memory_data):
+        fdf = forge_fdf("", fields, [], [], [])
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        path = 'reports/pdfs_base/audited_report.pdf'
+        base_pdf_directory = os.path.join(base_dir, path)
+
+        process = subprocess.Popen(
+            ['pdftk', base_pdf_directory, 'fill_form', '-', 'output',
+             '-', 'flatten'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        page_pdf_memory_data.write(process.communicate(input=fdf)[0])
+
+        return page_pdf_memory_data
+
+
+    def get_pdf_queryset(self, device, start_date, end_date):
+        queryset = self.get_queryset().filter(device=device)
+        queryset = queryset.filter(date__gte=start_date)
+        queryset = queryset.filter(date__lte=end_date)
+        return queryset.order_by('date')
+
+    def get_context_data(self, **kwargs):
+        context = super(AuditedReportView, self).get_context_data(**kwargs)
+        context['room_list'] = AllowedAddress.objects.all().distinct('local')
+        return context
+
+report = FullReportView.as_view()
+audited_report = AuditedReportView.as_view()

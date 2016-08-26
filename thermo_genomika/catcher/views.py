@@ -41,7 +41,7 @@ class CatcherView(TemplateView):
                 email_log = warn_mail(
                     thermo_info)
                 log = log + ", " + email_log
-                delete_log = delete_old_records(ip)
+                delete_log = delete_old_records(allowed_address)
                 log = log + ", " + delete_log
 
                 checklist = CheckListGenerator(

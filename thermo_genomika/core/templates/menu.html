@@ -25,7 +25,19 @@
           <ul class="nav navbar-nav">
           <li class="{% current 'core:charts' '' %}"><a href="{% url 'core:charts' %}">Thermo Info</a></li>
           <li class="{% current 'checklist:checklist' '' %}"><a href="{% url 'checklist:checklist' %}">Auditoria</a></li>
-          <li class="{% current 'reports:reports' '' %}"><a href="{% url 'reports:reports' %}">Relatórios</a></li>
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Relatórios<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="{% current 'reports:report' '' %}"><a href="{% url 'reports:report' %}">Relatório Completo</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="{% current 'reports:audited_report' '' %}"><a href="{% url 'reports:audited_report' %}">Relatório Auditado</a></li>
+              </ul>
+            </li>
+          </ul>
+
+
+
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown active">
