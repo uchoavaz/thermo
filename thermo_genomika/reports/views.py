@@ -211,15 +211,15 @@ class AuditedReportView(LoginRequiredView, SystemInfoView, ListView):
             fields.append(('tempminima{0}'.format(count), min_temp))
             fields.append(('afericoes{0}'.format(count), field.admeasurements))
             fields.append(('nconform{0}'.format(count), field.temp_not_allwd))
+
+            resp = '-'
+            check_date = '-'
+
             try:
                 resp = field.responsible.username
+                check_date = field.check_date.strftime('%d-%m-%Y')
             except AttributeError:
-                resp = '-'
-            check_date = field.check_date
-
-            if field.check_date is None:
-                check_date = '-'
-
+                pass
             fields.append(('resp{0}'.format(count), resp))
             fields.append(('datacheck{0}'.format(count), check_date))
 
@@ -237,7 +237,6 @@ class AuditedReportView(LoginRequiredView, SystemInfoView, ListView):
         page_pdf_memory_data.write(process.communicate(input=fdf)[0])
 
         return page_pdf_memory_data
-
 
     def get_pdf_queryset(self, device, start_date, end_date):
         queryset = self.get_queryset().filter(device=device)
