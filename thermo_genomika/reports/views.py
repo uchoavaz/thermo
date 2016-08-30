@@ -184,46 +184,49 @@ class AuditedReportView(LoginRequiredView, SystemInfoView, ListView):
         return response
 
     def get_fields(self, fields, queryset, device):
-        count = 1
+        try:
+            count = 1
 
-        max_temp = u'Até ' + str(device.max_temperature)\
-            + " " + device.get_measure_display()
+            max_temp = u'Até ' + str(device.max_temperature)\
+                + " " + device.get_measure_display()
 
-        month = queryset[0].date
-        month = babel.dates.format_date(month, 'MMMM', locale='pt_br')
-        year = queryset[0].date.strftime('%Y')
+            month = queryset[0].date
+            month = babel.dates.format_date(month, 'MMMM', locale='pt_br')
+            year = queryset[0].date.strftime('%Y')
 
-        fields.append(('local', device.local))
-        fields.append(('limites', max_temp))
-        fields.append(('mes', month.title()))
-        fields.append(('ano', year))
-        fields.append(('ident', device.device_name))
+            fields.append(('local', device.local))
+            fields.append(('limites', max_temp))
+            fields.append(('mes', month.title()))
+            fields.append(('ano', year))
+            fields.append(('ident', device.device_name))
 
-        measure = device.get_measure_display()
+            measure = device.get_measure_display()
 
-        for field in queryset:
-            avg_temp = str(field.avg_temp).replace('.', ',') + " " + measure
-            min_temp = str(field.min_temp).replace('.', ',') + " " + measure
-            max_temp = str(field.max_temp).replace('.', ',') + " " + measure
-            fields.append(('dia{0}'.format(count), field.date.day))
-            fields.append(('tempmedia{0}'.format(count), avg_temp))
-            fields.append(('tempmaxima{0}'.format(count), max_temp))
-            fields.append(('tempminima{0}'.format(count), min_temp))
-            fields.append(('afericoes{0}'.format(count), field.admeasurements))
-            fields.append(('nconform{0}'.format(count), field.temp_not_allwd))
+            for field in queryset:
+                avg_temp = str(field.avg_temp).replace('.', ',') + " " + measure
+                min_temp = str(field.min_temp).replace('.', ',') + " " + measure
+                max_temp = str(field.max_temp).replace('.', ',') + " " + measure
+                fields.append(('dia{0}'.format(count), field.date.day))
+                fields.append(('tempmedia{0}'.format(count), avg_temp))
+                fields.append(('tempmaxima{0}'.format(count), max_temp))
+                fields.append(('tempminima{0}'.format(count), min_temp))
+                fields.append(('afericoes{0}'.format(count), field.admeasurements))
+                fields.append(('nconform{0}'.format(count), field.temp_not_allwd))
 
-            resp = '-'
-            check_date = '-'
+                resp = '-'
+                check_date = '-'
 
-            try:
-                resp = field.responsible.username
-                check_date = field.check_date.strftime('%d-%m-%Y')
-            except AttributeError:
-                pass
-            fields.append(('resp{0}'.format(count), resp))
-            fields.append(('datacheck{0}'.format(count), check_date))
+                try:
+                    resp = field.responsible.username
+                    check_date = field.check_date.strftime('%d-%m-%Y')
+                except AttributeError:
+                    pass
+                fields.append(('resp{0}'.format(count), resp))
+                fields.append(('datacheck{0}'.format(count), check_date))
 
-            count = count + 1
+                count = count + 1
+        except IndexError:
+            raise Exception("Dados não encontrados !")
 
     def generate_pdf(self, fields, page_pdf_memory_data):
         fdf = forge_fdf("", fields, [], [], [])
