@@ -226,7 +226,7 @@ class AuditedReportView(LoginRequiredView, SystemInfoView, ListView):
 
                 count = count + 1
         except IndexError:
-            raise Exception("Dados não encontrados !")
+            raise Exception(u"Dados não encontrados !")
 
     def generate_pdf(self, fields, page_pdf_memory_data):
         fdf = forge_fdf("", fields, [], [], [])
