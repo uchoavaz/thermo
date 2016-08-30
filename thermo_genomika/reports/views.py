@@ -14,6 +14,7 @@ from django.contrib import messages
 from django.utils import timezone
 from checklist.models import DeviceChecklist
 from fdfgen import forge_fdf
+import babel.dates
 import csv
 import os
 
@@ -168,23 +169,11 @@ class AuditedReportView(LoginRequiredView, SystemInfoView, ListView):
 
     def pdf(self, device, start_date, end_date):
         queryset = self.get_pdf_queryset(device, start_date, end_date)
+        queryset = queryset.order_by('date')
         page_pdf_memory_data = tempfile.NamedTemporaryFile()
         fields = []
-        count = 1
 
-        for field in queryset:
-            fields.append(('day{0}'.format(count)))
-            fields.append(('local{0}'.format(count),))
-            fields.append(('avg_temp{0}'.format(count),))
-            fields.append(('max_temp{0}'.format(count),))
-            fields.append(('min_temp{0}'.format(count),))
-            fields.append(('max_temp_hour{0}'.format(count),))
-            fields.append(('min_temp_hour{0}'.format(count),))
-            fields.append(('admeas{0}'.format(count),))
-            fields.append(('temp_not_allwd{0}'.format(count),))
-            fields.append(('respo{0}'.format(count),))
-            fields.append(('check_date{0}'.format(count),))
-            count = count + 1
+        self.get_fields(fields, queryset, device)
         inmemory_file = self.generate_pdf(fields, page_pdf_memory_data)
 
         response = HttpResponse(content_type='text/pdf')
@@ -193,6 +182,48 @@ class AuditedReportView(LoginRequiredView, SystemInfoView, ListView):
         response['Content-Disposition'] = 'attachment; filename=teste.pdf; charset=utf-8'
 
         return response
+
+    def get_fields(self, fields, queryset, device):
+        count = 1
+
+        max_temp = u'Até ' + str(device.max_temperature)\
+            + " " + device.get_measure_display()
+
+        month = queryset[0].date
+        month = babel.dates.format_date(month, 'MMMM', locale='pt_br')
+        year = queryset[0].date.strftime('%Y')
+
+        fields.append(('local', device.local))
+        fields.append(('limites', max_temp))
+        fields.append(('mes', month.title()))
+        fields.append(('ano', year))
+        fields.append(('ident', device.device_name))
+
+        measure = device.get_measure_display()
+
+        for field in queryset:
+            avg_temp = str(field.avg_temp).replace('.', ',') + " " + measure
+            min_temp = str(field.min_temp).replace('.', ',') + " " + measure
+            max_temp = str(field.max_temp).replace('.', ',') + " " + measure
+            fields.append(('dia{0}'.format(count), field.date.day))
+            fields.append(('tempmedia{0}'.format(count), avg_temp))
+            fields.append(('tempmaxima{0}'.format(count), max_temp))
+            fields.append(('tempminima{0}'.format(count), min_temp))
+            fields.append(('afericoes{0}'.format(count), field.admeasurements))
+            fields.append(('nconform{0}'.format(count), field.temp_not_allwd))
+            try:
+                resp = field.responsible.username
+            except AttributeError:
+                resp = '-'
+            check_date = field.check_date
+
+            if field.check_date is None:
+                check_date = '-'
+
+            fields.append(('resp{0}'.format(count), resp))
+            fields.append(('datacheck{0}'.format(count), check_date))
+
+            count = count + 1
 
     def generate_pdf(self, fields, page_pdf_memory_data):
         fdf = forge_fdf("", fields, [], [], [])

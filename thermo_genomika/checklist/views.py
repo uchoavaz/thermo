@@ -1,5 +1,6 @@
 
 # -*- coding: utf-8 -*-
+from django.utils.translation import get_language, activate
 from django.core.exceptions import ObjectDoesNotExist
 from account.views import LoginRequiredView
 from django.views.generic import ListView

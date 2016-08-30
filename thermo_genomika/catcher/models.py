@@ -27,6 +27,8 @@ class AllowedAddress(models.Model):
         verbose_name='Days to delete', default=30)
     local = models.CharField(
         verbose_name="Local", max_length=150, unique=True, default='')
+    device_name = models.CharField(
+        verbose_name='Device Name', max_length=20, default='')
 
     class Meta:
         verbose_name = (u'Allowed Address')
