@@ -26,7 +26,7 @@ class FullReportView(LoginRequiredView, SystemInfoView, ListView):
     def generate_csv(self, file_name, date_str, queryset):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = \
-            'attachment; filename="{0}_thermo_report{1}.csv"'.format(
+            'attachment; filename="{0}_thermo_report_complete{1}.csv"'.format(
                 file_name, date_str)
 
         writer = csv.writer(response, delimiter=',')
@@ -176,10 +176,14 @@ class AuditedReportView(LoginRequiredView, SystemInfoView, ListView):
         self.get_fields(fields, queryset, device)
         inmemory_file = self.generate_pdf(fields, page_pdf_memory_data)
 
+        file_name_date = start_date.strftime('%m_%Y')
+
         response = HttpResponse(content_type='text/pdf')
         inmemory_file.seek(0)
         response.write(inmemory_file.read())
-        response['Content-Disposition'] = 'attachment; filename=teste.pdf; charset=utf-8'
+        response['Content-Disposition'] = \
+            'attachment; filename={0}_thermo_report_complete_{1}.pdf; charset=utf-8'.format(
+                device.local.replace(' ', '_'), file_name_date)
 
         return response
 
