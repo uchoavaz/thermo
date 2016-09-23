@@ -22,7 +22,9 @@ class AllowedAddress(models.Model):
     measure = models.IntegerField(
         verbose_name="Measure", choices=MEASURE_CHOICES, default=1)
     max_temperature = models.FloatField(
-        verbose_name='Maximum temperature permitted', default=20.0)
+        verbose_name='Maximum temperature allowed', default=20.0)
+    min_temperature = models.FloatField(
+        verbose_name='Minimum temperature allowed', default=18.0)
     days_to_delete = models.IntegerField(
         verbose_name='Days to delete', default=30)
     local = models.CharField(
@@ -38,11 +40,8 @@ class AllowedAddress(models.Model):
         string = self._meta.get_field("ip").verbose_name.title() \
             + ":" + self.ip + ", "
         string = string + self._meta.get_field("local").verbose_name.title() \
-            + ":" + self.local + ","
-        string = string + self._meta.get_field(
-            "max_temperature").verbose_name.title() \
-            + ":" + str(self.max_temperature) \
-            + " " + self.get_measure_display().encode('ascii', 'ignore')
+            + ":" + self.local
+
         return string
 
 

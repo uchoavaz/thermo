@@ -7,7 +7,7 @@ from .mail import send_mail
 
 def warn_mail(thermo_info):
     email_log = 'Email sent with success'
-    if thermo_info.device_ip.max_temperature < thermo_info.temperature:
+    if not thermo_info.device_ip.min_temperature <= thermo_info.temperature <= thermo_info.device_ip.max_temperature:
         thermo_info.allowed_temp = False
         thermo_info.save()
         situation = u"ALARME !"

@@ -22,12 +22,16 @@ class AllowedAddressAdmin(admin.ModelAdmin):
         'ip',
         'local',
         'is_active',
-        'measure', 'max_temperature', 'days_to_delete'
+        'measure',
+        'max_temperature',
+        'min_temperature',
+        'days_to_delete'
     ]
     list_display = (
         'ip',
         'local',
         'max_temperature',
+        'min_temperature',
         'days_to_delete',
         'measure',
         'is_active',

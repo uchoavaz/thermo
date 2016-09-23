@@ -38,6 +38,8 @@ class FullReportView(LoginRequiredView, SystemInfoView, ListView):
             AllowedAddress._meta.get_field(
                 "max_temperature").verbose_name.title(),
             AllowedAddress._meta.get_field(
+                "min_temperature").verbose_name.title(),
+            AllowedAddress._meta.get_field(
                 "measure").verbose_name.title(),
             ThermoInfo._meta.get_field("allowed_temp").verbose_name.title(),
             ThermoInfo._meta.get_field("capture_date").verbose_name.title()
@@ -52,6 +54,7 @@ class FullReportView(LoginRequiredView, SystemInfoView, ListView):
                 line.device_ip.local,
                 line.device_ip.ip,
                 line.device_ip.max_temperature,
+                line.device_ip.min_temperature,
                 line.device_ip.get_measure_display().encode('ascii', 'ignore'),
                 line.allowed_temp,
                 temperature.strftime('%d-%m-%Y %H:%M')
@@ -191,20 +194,20 @@ class AuditedReportView(LoginRequiredView, SystemInfoView, ListView):
         try:
             count = 1
 
-            max_temp = u'Até ' + str(device.max_temperature)\
-                + " " + device.get_measure_display()
+            measure = device.get_measure_display()
+
+            size_temp_allwd = str(device.min_temperature) + " " + measure + " - " + \
+                str(device.max_temperature) + " " + measure
 
             month = queryset[0].date
             month = babel.dates.format_date(month, 'MMMM', locale='pt_br')
             year = queryset[0].date.strftime('%Y')
 
             fields.append(('local', device.local))
-            fields.append(('limites', max_temp))
+            fields.append(('limites', size_temp_allwd))
             fields.append(('mes', month.title()))
             fields.append(('ano', year))
             fields.append(('ident', device.device_name))
-
-            measure = device.get_measure_display()
 
             for field in queryset:
                 avg_temp = str(field.avg_temp).replace('.', ',') + " " + measure
