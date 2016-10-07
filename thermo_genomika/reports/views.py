@@ -178,15 +178,16 @@ class AuditedReportView(LoginRequiredView, SystemInfoView, ListView):
 
         self.get_fields(fields, queryset, device)
         inmemory_file = self.generate_pdf(fields, page_pdf_memory_data)
-
-        file_name_date = start_date.strftime('%m_%Y')
+        initial_period = start_date.strftime('%d_%m_%Y')
+        final_perdiod = end_date.strftime('%d_%m_%Y')
+        file_name_period = initial_period + "_to_" + final_perdiod
 
         response = HttpResponse(content_type='text/pdf')
         inmemory_file.seek(0)
         response.write(inmemory_file.read())
         response['Content-Disposition'] = \
-            'attachment; filename={0}_thermo_report_complete_{1}.pdf; charset=utf-8'.format(
-                device.local.replace(' ', '_'), file_name_date)
+            'attachment; filename={0}_thermo_report_audited_{1}.pdf; charset=utf-8'.format(
+                device.local.replace(' ', '_'), file_name_period)
 
         return response
 
