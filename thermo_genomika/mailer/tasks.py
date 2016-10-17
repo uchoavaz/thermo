@@ -3,6 +3,7 @@
 from .models import MailLog
 from .models import Recipient
 from .mail import send_mail
+from django.utils import timezone
 
 
 def warn_mail(thermo_info):
@@ -14,8 +15,10 @@ def warn_mail(thermo_info):
         recipient_list = Recipient.objects.filter(
             is_active=True).values_list('email', flat=True)
         if len(recipient_list) > 0:
+            date_time = timezone.get_current_timezone().normalize(
+                thermo_info.capture_date)
             send_mail(
-                thermo_info.capture_date,
+                date_time,
                 thermo_info.device_ip.local,
                 thermo_info.temperature,
                 situation,
