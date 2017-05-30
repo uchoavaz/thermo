@@ -3,9 +3,9 @@ function read_analog ()
   a = r * 310,3030303 / 1024
   conn=net.createConnection(net.TCP, 0)
   conn:on("receive", function(conn, payload) print(payload) end)
-  conn:connect(8005, "172.16.225.18")
+  conn:connect(8005, "172.16.225.6")
   temp = "temp="..a
-  var="GET /catcher?"..temp.." HTTP/1.1\r\nHost: 172.16.225.18\r\nConnection: keep-alive\r\nAccept: */*\r\n\r\n"
+  var="GET /catcher?"..temp.." HTTP/1.1\r\nHost: 172.16.225.6\r\nConnection: keep-alive\r\nAccept: */*\r\n\r\n"
   conn:send(var)
   print(a)
   gpio.write(3, gpio.HIGH)
@@ -21,7 +21,7 @@ gpio.write(3, gpio.LOW)
 
 
 ssid = "GNMK-ADMIN1"
-psw = "g3n3t1c@"
+psw = "g3n3t1c@g3n0m1k@"
 ip = "172.16.225.190"
 mask = "255.255.255.0"
 gate = "172.16.225.1"
