@@ -3,7 +3,7 @@ function read_analog ()
   a = r * 310,3030303 / 1024
   conn=net.createConnection(net.TCP, 0)
   conn:on("receive", function(conn, payload) print(payload) end)
-  conn:connect(8005, "172.16.225.6")
+  conn:connect(8005, "172.16.225.9")
   temp = "temp="..a
   var="GET /catcher?"..temp.." HTTP/1.1\r\nHost: 172.16.225.6\r\nConnection: keep-alive\r\nAccept: */*\r\n\r\n"
   conn:send(var)
