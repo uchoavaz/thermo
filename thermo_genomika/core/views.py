@@ -3,7 +3,9 @@
 
 from django.core.exceptions import ObjectDoesNotExist
 from account.views import LoginRequiredView
-from django.http import HttpResponse
+from django.views.generic import TemplateView
+from django.template import RequestContext
+from django.shortcuts import render_to_response
 from django.views.generic import ListView
 from catcher.models import ThermoInfo
 from catcher.models import AllowedAddress
@@ -207,5 +209,80 @@ class ChartsView(LoginRequiredView, SystemInfoView, ListView):
         return temp_list
 
 
+class DashboardsView(TemplateView):
+    template_name = "dashboards.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardsView, self).get_context_data(**kwargs)
+        allowed_address = AllowedAddress.objects.get(pk=kwargs['local_id'])
+        measure = allowed_address.get_measure_display()
+
+        queryset = ThermoInfo.objects.filter(
+            device_ip=allowed_address)
+        queryset = queryset.order_by('capture_date')
+
+        max_temp = queryset.aggregate(
+            Max('temperature'))['temperature__max']
+        if max_temp is not None:
+            max_temp_treat = str(max_temp) + " " + measure
+
+        min_temp = queryset.aggregate(
+            Min('temperature'))['temperature__min']
+
+        if min_temp is not None:
+            min_temp_treat = str(min_temp) + " " + measure
+
+        last_position = queryset[queryset.count() - 1]
+        last_temp = str(last_position.temperature) + " " + measure
+
+        min_temp_length = queryset.filter(
+            temperature=min_temp).count()
+        max_temp_length = queryset.filter(
+            temperature=max_temp).count()
+
+        min_temp_date = queryset.filter(
+            temperature=min_temp)[min_temp_length - 1].capture_date
+        min_temp_date = timezone.get_current_timezone().normalize(
+            min_temp_date)
+        max_temp_date = queryset.filter(
+            temperature=max_temp)[max_temp_length - 1].capture_date
+        max_temp_date = timezone.get_current_timezone().normalize(
+            max_temp_date)
+        last_temp_date = timezone.get_current_timezone().normalize(
+            last_position.capture_date)
+        last_temp_date = last_temp_date.strftime('%d-%m-%Y %H:%M')
+        min_temp_date = min_temp_date.strftime('%d-%m-%Y %H:%M')
+        max_temp_date = max_temp_date.strftime('%d-%m-%Y %H:%M')
+
+        if allowed_address.min_temperature <= float(last_position.temperature) and \
+                float(last_position.temperature) < (allowed_address.max_temperature - 2):
+            last_temp_color = '#339933'
+
+        elif float(last_position.temperature) >= allowed_address.max_temperature - 2 \
+                and float(last_position.temperature) <= allowed_address.max_temperature:
+            last_temp_color = '#e6b800'
+        else:
+            if self.request.GET.get('bk_color') == '#e6b800':
+                last_temp_color = '#ff3333'
+            else:
+                last_temp_color = '#e6b800'
+
+        context['local_name'] = allowed_address.local
+        context['last_temp'] = last_temp
+        context['max_temp'] = max_temp_treat
+        context['min_temp'] = min_temp_treat
+        context['min_temp_date'] = min_temp_date
+        context['max_temp_date'] = max_temp_date
+        context['last_temp_date'] = last_temp_date
+        context['last_temp_color'] = last_temp_color
+        return context
+
+
+class GuiDashboard(DashboardsView):
+    template_name = 'tr_body_dashboard.html'
+
+
+gui_dashboard = GuiDashboard.as_view()
 home = HomeView.as_view()
 charts = ChartsView.as_view()
+dashboards = DashboardsView.as_view()

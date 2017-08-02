@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block dashboard %}
+
+<script type="text/javascript" src="{% static 'gui_dashboard.js' %}"></script>
+
+<style type="text/css">
+
+.panel-heading{
+
+    padding: 31.3% 15px;
+
+}
+.panel-heading.panel-heading-half-height{
+    padding: 6.6% 15px;
+}
+#putdown{
+    padding-top: 2.5%;
+}
+#temp{
+    font-size: 150px;
+}
+.title-font-size{
+    font-size: 50px;
+}
+#temp_date{
+    font-size: 30px;
+}
+.panel-red .panel-heading{
+    background-color: gray;
+}
+.panel-primary>.panel-heading{
+    background-color: gray;
+}
+.panel-green .panel-heading{
+    background-color: {{last_temp_color}};
+}
+body{
+    font-size: 35px;
+    color: gray;
+}
+</style>
+    
+     <div id="body_dashboard">
+        <input type='hidden' id="local_pk" value='{{local_pk}}'></input>
+        <div id ="putdown">
+            <div class="text-center title-font-size">{{local_name}}</div>
+            <div class="col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-info fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div>Última Temperatura Aferida</div>
+                                <div class="huge" id="temp" >{{last_temp}}</div>
+                                <span id="temp_date">{{last_temp_date}}</span>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="panel panel-red">
+                    <div class="panel-heading panel-heading-half-height">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-fire fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div>Máxima Registrada</div>
+                                <div class="huge" id="temp">{{max_temp}}</div>
+                                <span id="temp_date">{{max_temp_date}}</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading panel-heading-half-height">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-cube fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div>Mínima Registrada</div>
+                                <div class="huge" id="temp">{{min_temp}}</div>
+                                <span id="temp_date">{{min_temp_date}}</span>
+                            </div>
+                                
+                            
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+
+{% endblock %}
+
