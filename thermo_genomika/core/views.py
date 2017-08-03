@@ -221,6 +221,12 @@ class DashboardsView(TemplateView):
             device_ip=allowed_address)
         queryset = queryset.order_by('capture_date')
 
+        today_date = datetime.today().date()
+        start_date_today = datetime(today_date.year, today_date.month, today_date.day)
+        end_date_today = datetime(today_date.year, today_date.month, today_date.day, 23,59,59)
+        queryset = queryset.filter(capture_date__gte=start_date_today)
+        queryset = queryset.filter(capture_date__lte=end_date_today)
+
         max_temp = queryset.aggregate(
             Max('temperature'))['temperature__max']
         if max_temp is not None:
@@ -250,9 +256,10 @@ class DashboardsView(TemplateView):
             max_temp_date)
         last_temp_date = timezone.get_current_timezone().normalize(
             last_position.capture_date)
-        last_temp_date = last_temp_date.strftime('%d-%m-%Y %H:%M')
-        min_temp_date = min_temp_date.strftime('%d-%m-%Y %H:%M')
-        max_temp_date = max_temp_date.strftime('%d-%m-%Y %H:%M')
+
+        last_temp_date = last_temp_date.strftime('Hoje às %H:%M')
+        min_temp_date = min_temp_date.strftime('Hoje às %H:%M')
+        max_temp_date = max_temp_date.strftime('Hoje às %H:%M')
 
         if allowed_address.min_temperature <= float(last_position.temperature) and \
                 float(last_position.temperature) < (allowed_address.max_temperature - 2):
