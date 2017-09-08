@@ -257,30 +257,43 @@ class DashboardsView(TemplateView):
         last_temp_date = timezone.get_current_timezone().normalize(
             last_position.capture_date)
 
-        last_temp_date = last_temp_date.strftime('Hoje às %H:%M')
+        last_temp_date_treated = last_temp_date.strftime('Hoje às %H:%M')
         min_temp_date = min_temp_date.strftime('Hoje às %H:%M')
         max_temp_date = max_temp_date.strftime('Hoje às %H:%M')
 
+        play_horn = self.request.GET.get('play_horn')
+        horn = 'false'
         if allowed_address.min_temperature <= float(last_position.temperature) and \
                 float(last_position.temperature) < (allowed_address.max_temperature - 2):
             last_temp_color = '#339933'
+            play_horn = 'false'
 
         elif float(last_position.temperature) >= allowed_address.max_temperature - 2 \
                 and float(last_position.temperature) <= allowed_address.max_temperature:
             last_temp_color = '#e6b800'
+            play_horn = 'false'
         else:
+            time_now = self.request.GET.get('time_now')
+            if time_now != last_temp_date.strftime('%H:%M'):
+                play_horn = 'false'
+            if (time_now == last_temp_date.strftime('%H:%M')) and (play_horn == 'false' or play_horn is None):
+                horn = 'true'
+
             if self.request.GET.get('bk_color') == '#e6b800':
                 last_temp_color = '#ff3333'
             else:
                 last_temp_color = '#e6b800'
 
+        context['horn'] = horn
+        context['play_horn'] = play_horn
+        context['time_now'] = datetime.today().strftime('%H:%M')
         context['local_name'] = allowed_address.local
         context['last_temp'] = last_temp
         context['max_temp'] = max_temp_treat
         context['min_temp'] = min_temp_treat
         context['min_temp_date'] = min_temp_date
         context['max_temp_date'] = max_temp_date
-        context['last_temp_date'] = last_temp_date
+        context['last_temp_date'] = last_temp_date_treated
         context['last_temp_color'] = last_temp_color
         return context
 
