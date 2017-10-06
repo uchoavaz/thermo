@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 echo "America/Recife" > /etc/timezone
@@ -14,7 +13,7 @@ cd thermo_genomika
 
 make clean
 
-if [ "makemig" = true ] ; then
+if [ "$makemig" = true ] ; then
         python manage.py makemigrations
 fi
 
