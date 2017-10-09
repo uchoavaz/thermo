@@ -6,7 +6,6 @@ $(document).ready(function(){
 		var time_now_str = $("#time_now").val()
 		var horn = $("#horn").val()
 		var play_horn = $("#play_horn").val()
-
 		if (horn === "true") {
 			snd.play()
 			play_horn = 'true'
