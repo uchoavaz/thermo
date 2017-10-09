@@ -7,7 +7,7 @@ dpkg-reconfigure -f noninteractive tzdata
 
 git checkout $thermo_gnmk_branch
 
-cd thermo_genomika
+cd /var/www/thermo-gnmk/thermo_genomika
 make clean
 
 if [ "$makemig" = true ] ; then
