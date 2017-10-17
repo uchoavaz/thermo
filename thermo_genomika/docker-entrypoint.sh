@@ -5,7 +5,7 @@ dpkg-reconfigure -f noninteractive tzdata
 
 /usr/sbin/sshd -D &!
 
-if [! -d "/var/www/thermo-gnmk/thermo_genomika" ]; then
+if [ ! -d "/var/www/thermo-gnmk/thermo_genomika" ]; then
   git clone git@gitlab.com:genomika/thermo-gnmk.git
 fi
 cd /var/www/thermo-gnmk/thermo_genomika
