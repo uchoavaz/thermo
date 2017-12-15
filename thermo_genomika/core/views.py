@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -283,7 +282,7 @@ class DashboardsView(TemplateView):
                 last_temp_color = '#ff3333'
             else:
                 last_temp_color = '#e6b800'
-
+        context['local_pk'] = kwargs['local_id']
         context['horn'] = horn
         context['play_horn'] = play_horn
         context['time_now'] = datetime.today().strftime('%H:%M')
