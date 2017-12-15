@@ -2,7 +2,6 @@ $(document).ready(function(){
 	var snd = new Audio("/static/alert.wav");
 	function update_dashboard() {
 		var pk = $("#local_pk").val()
-		console.log(pk)
 		var color = $("#bk_color").val()
 		var time_now_str = $("#time_now").val()
 		var horn = $("#horn").val()
