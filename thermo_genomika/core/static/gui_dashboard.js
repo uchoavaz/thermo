@@ -14,7 +14,7 @@ $(document).ready(function(){
 
 		$.ajax({
 			type: "GET",
-			url: "/gui_dashboard/" + pk,
+			url: "/gui_dashboard/" + 1,
 			data: {bk_color: color, time_now: time_now_str, horn:horn, play_horn:play_horn}
 		}).done(function(tr_lookup){
 			$("#body_dashboard").empty();
