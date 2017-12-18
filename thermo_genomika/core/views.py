@@ -285,6 +285,17 @@ class DashboardsView(TemplateView):
                     last_temp_color = '#e6b800'
         except AssertionError:
             last_temp_color = "#000000"
+            horn = 'false'
+            play_horn = 'false'
+            last_temp = '-'
+            max_temp_treat = '-'
+            min_temp_treat = '-'
+            min_temp_date ='-' 
+            max_temp_date = '-'
+            last_temp_date_treated = '-'
+            last_temp_color = '-'
+            
+            
         context['local_pk'] = kwargs['local_id']
         context['horn'] = horn
         context['play_horn'] = play_horn
