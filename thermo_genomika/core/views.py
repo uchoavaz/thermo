@@ -284,7 +284,7 @@ class DashboardsView(TemplateView):
                 else:
                     last_temp_color = '#e6b800'
         except AssertionError:
-            last_temp_color = #000000
+            last_temp_color = "#000000"
         context['local_pk'] = kwargs['local_id']
         context['horn'] = horn
         context['play_horn'] = play_horn
