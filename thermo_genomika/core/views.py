@@ -225,63 +225,66 @@ class DashboardsView(TemplateView):
         end_date_today = datetime(today_date.year, today_date.month, today_date.day, 23,59,59)
         queryset = queryset.filter(capture_date__gte=start_date_today)
         queryset = queryset.filter(capture_date__lte=end_date_today)
-
-        max_temp = queryset.aggregate(
-            Max('temperature'))['temperature__max']
-        if max_temp is not None:
-            max_temp_treat = str(max_temp) + " " + measure
-
-        min_temp = queryset.aggregate(
-            Min('temperature'))['temperature__min']
-
-        if min_temp is not None:
-            min_temp_treat = str(min_temp) + " " + measure
-
-        last_position = queryset[queryset.count() - 1]
-        last_temp = str(last_position.temperature) + " " + measure
-
-        min_temp_length = queryset.filter(
-            temperature=min_temp).count()
-        max_temp_length = queryset.filter(
-            temperature=max_temp).count()
-
-        min_temp_date = queryset.filter(
-            temperature=min_temp)[min_temp_length - 1].capture_date
-        min_temp_date = timezone.get_current_timezone().normalize(
-            min_temp_date)
-        max_temp_date = queryset.filter(
-            temperature=max_temp)[max_temp_length - 1].capture_date
-        max_temp_date = timezone.get_current_timezone().normalize(
-            max_temp_date)
-        last_temp_date = timezone.get_current_timezone().normalize(
-            last_position.capture_date)
-
-        last_temp_date_treated = last_temp_date.strftime('Hoje às %H:%M')
-        min_temp_date = min_temp_date.strftime('Hoje às %H:%M')
-        max_temp_date = max_temp_date.strftime('Hoje às %H:%M')
-
-        play_horn = self.request.GET.get('play_horn')
-        horn = 'false'
-        if allowed_address.min_temperature <= float(last_position.temperature) and \
-                float(last_position.temperature) < (allowed_address.max_temperature - 2):
-            last_temp_color = '#339933'
-            play_horn = 'false'
-
-        elif float(last_position.temperature) >= allowed_address.max_temperature - 2 \
-                and float(last_position.temperature) <= allowed_address.max_temperature:
-            last_temp_color = '#e6b800'
-            play_horn = 'false'
-        else:
-            time_now = self.request.GET.get('time_now')
-            if time_now != last_temp_date.strftime('%H:%M'):
+        
+        try:
+            last_position = queryset[queryset.count() - 1]
+    
+            max_temp = queryset.aggregate(
+                Max('temperature'))['temperature__max']
+            if max_temp is not None:
+                max_temp_treat = str(max_temp) + " " + measure
+    
+            min_temp = queryset.aggregate(
+                Min('temperature'))['temperature__min']
+    
+            if min_temp is not None:
+                min_temp_treat = str(min_temp) + " " + measure
+            
+            last_temp = str(last_position.temperature) + " " + measure
+    
+            min_temp_length = queryset.filter(
+                temperature=min_temp).count()
+            max_temp_length = queryset.filter(
+                temperature=max_temp).count()
+            min_temp_date = queryset.filter(
+                temperature=min_temp)[min_temp_length - 1].capture_date
+            min_temp_date = timezone.get_current_timezone().normalize(
+                min_temp_date)
+            max_temp_date = queryset.filter(
+                temperature=max_temp)[max_temp_length - 1].capture_date
+            max_temp_date = timezone.get_current_timezone().normalize(
+                max_temp_date)
+            last_temp_date = timezone.get_current_timezone().normalize(
+                last_position.capture_date)
+    
+            last_temp_date_treated = last_temp_date.strftime('Hoje às %H:%M')
+            min_temp_date = min_temp_date.strftime('Hoje às %H:%M')
+            max_temp_date = max_temp_date.strftime('Hoje às %H:%M')
+    
+            play_horn = self.request.GET.get('play_horn')
+            horn = 'false'
+            if allowed_address.min_temperature <= float(last_position.temperature) and \
+                    float(last_position.temperature) < (allowed_address.max_temperature - 2):
+                last_temp_color = '#339933'
                 play_horn = 'false'
-            if (time_now == last_temp_date.strftime('%H:%M')) and (play_horn == 'false' or play_horn is None):
-                horn = 'true'
-
-            if self.request.GET.get('bk_color') == '#e6b800':
-                last_temp_color = '#ff3333'
-            else:
+    
+            elif float(last_position.temperature) >= allowed_address.max_temperature - 2 \
+                    and float(last_position.temperature) <= allowed_address.max_temperature:
                 last_temp_color = '#e6b800'
+                play_horn = 'false'
+            else:
+                time_now = self.request.GET.get('time_now')
+                if time_now != last_temp_date.strftime('%H:%M'):
+                    play_horn = 'false'
+                if (time_now == last_temp_date.strftime('%H:%M')) and (play_horn == 'false' or play_horn is None):
+                    horn = 'true'
+    
+                if self.request.GET.get('bk_color') == '#e6b800':
+                    last_temp_color = '#ff3333'
+                else:
+                    last_temp_color = '#e6b800'
+        except AssertionError:
+            last_temp_color = #000000
         context['local_pk'] = kwargs['local_id']
         context['horn'] = horn
         context['play_horn'] = play_horn
