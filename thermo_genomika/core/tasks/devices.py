@@ -2,7 +2,7 @@
 
 from pyping import ping
 from celery import shared_task
-from .models import AllowedAddress
+from core.models import AllowedAddress
 from celery.task.base import periodic_task
 
 
