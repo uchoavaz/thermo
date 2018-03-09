@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from pyping import ping
-from celery.schedules import crontab
+from datetime import timedelta
 from catcher.models import AllowedAddress
 from celery.task.base import periodic_task
 
 
-@periodic_task(run_every=crontab(hour=0, minute=1))
+@periodic_task(run_every=timedelta(seconds=1))
 def check_devices():
 
 	thermos = AllowedAddress.objects.all()
