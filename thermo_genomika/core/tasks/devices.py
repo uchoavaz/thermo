@@ -12,7 +12,7 @@ def check_devices():
 	thermos = AllowedAddress.objects.all()
 
 	for thermo in thermos:
-		thermo.ip
+		ip = thermo.ip
 		response = ping(ip)
 
 		if response.ret_code == 0:
