@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from pyping import ping
-from celery import shared_task
+from celery.schedules import crontab
 from catcher.models import AllowedAddress
 from celery.task.base import periodic_task
 
