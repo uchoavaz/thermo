@@ -7,7 +7,7 @@ from decouple import config
 
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'thermo_genomika.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
 
 app = Celery('thermo_genomika', broker=config('CELERY_BROKER_URL'))
 
