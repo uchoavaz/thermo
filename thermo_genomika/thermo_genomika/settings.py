@@ -155,11 +155,11 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERYBEAT_SCHEDULE = {}
 
 TASKS_SCHEDULE = {
-    # 'lot-expiration': {
-    #     'task': 'stock.tasks.lot_expiration.check_lot_expiration_date',
-    #     'schedule': crontab(0, 7, day_of_week='mon,tue,wed,thu,fri,sat'),
-    #     'args': []
-    # },
+     'devices-check': {
+         'task': 'core.tasks.devices.check_devices',
+         'schedule': crontab(*, *, day_of_week='sunday,mon,tue,wed,thu,fri,sat'),
+         'args': []
+     },
 }
 
 

@@ -3,11 +3,11 @@
 echo "America/Recife" > /etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
 
-/usr/sbin/sshd -D &!
-
 cd /var/www/thermo-gnmk/thermo_genomika
 git checkout $thermo_gnmk_branch
 make clean
+
+pip install -r requirements.txt
 
 if [ "$makemig" = true ] ; then
         python manage.py makemigrations
