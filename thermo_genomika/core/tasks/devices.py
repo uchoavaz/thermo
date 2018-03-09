@@ -3,9 +3,10 @@
 from pyping import ping
 from celery import shared_task
 from .models import AllowedAddress
+from celery.task.base import periodic_task
 
 
-@shared_task
+@periodic_task(run_every=crontab(hour=0, minute=1))
 def check_devices():
 
 	thermos = AllowedAddress.objects.all()
