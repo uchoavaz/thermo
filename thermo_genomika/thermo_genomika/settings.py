@@ -159,7 +159,7 @@ TASKS_SCHEDULE = {
      #     'task': 'core.tasks.devices.check_devices',
      #     'schedule': crontab('*', '*', day_of_week='sunday,mon,tue,wed,thu,fri,sat'),
      #     'args': []
-     },
+     # },
 }
 
 
