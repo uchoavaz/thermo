@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import os
+from celery.schedules import crontab
 from celery import *
 from django.conf import settings  # noqa
 from decouple import config
