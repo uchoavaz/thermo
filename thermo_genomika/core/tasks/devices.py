@@ -13,7 +13,7 @@ def check_devices():
 
 	for thermo in thermos:
 		thermo.ip
-		response = pyping.ping(ip)
+		response = ping(ip)
 
 		if response.ret_code == 0:
 		    print("IP: {0} is reachable").format(ip)
