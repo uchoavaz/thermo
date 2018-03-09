@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
+from celery.schedules import crontab
 from decouple import config
 import os
 
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'reports',
     'checklist',
     'widget_tweaks',
+    'djcelery',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -141,3 +143,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CELERY_BROKER_URL = config('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')
+CELERY_TASK_RESULT_EXPIRES = 4096
+CELERY_TIMEZONE = 'America/Recife'
+CELERY_ACCEPT_CONTENT = ['json', 'application/x-python-serialize']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERYBEAT_SCHEDULE = {}
+
+TASKS_SCHEDULE = {
+    # 'lot-expiration': {
+    #     'task': 'stock.tasks.lot_expiration.check_lot_expiration_date',
+    #     'schedule': crontab(0, 7, day_of_week='mon,tue,wed,thu,fri,sat'),
+    #     'args': []
+    # },
+}
+
+
+CELERYBEAT_SCHEDULE.update(TASKS_SCHEDULE)
+

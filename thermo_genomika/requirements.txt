@@ -24,3 +24,5 @@ traitlets==4.2.2
 wcwidth==0.1.7
 wheel==0.24.0
 Babel==2.3.4
+celery==3.1.25
+django-celery==3.2.1
