@@ -16,9 +16,11 @@ def check_device_status(thermo, device_line):
 
     if devices_status:
         device_status = devices_status[0]
+        print device_status
 
         if device_status.second_check is None:
-
+            print "None is second"
+            print device_line
             device_status.second_check = device_line
 
         else:
@@ -64,10 +66,6 @@ def check_devices():
         if response.ret_code != 0:
 
             send_email, message = check_device_status(thermo, False)
-
-            print send_email
-            print message
-            print thermo
 
             if send_email:
 
