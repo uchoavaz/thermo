@@ -17,5 +17,5 @@ if [ "$migrate" = true ] ; then
         python manage.py migrate
 fi
 
-celery -A thermo_genomika worker --loglevel=info --beat >> /logs/celery_beat.log 2>&1 &!
+celery -A thermo_genomika worker --loglevel=info --beat >> /var/www/celery_beat.log 2>&1 &!
 python manage.py runserver 0.0.0.0:$port
