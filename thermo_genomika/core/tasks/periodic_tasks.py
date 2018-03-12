@@ -7,7 +7,7 @@ from celery.task.base import periodic_task
 from mailer.tasks import device_not_connected_mail
 
 
-@periodic_task(run_every=timedelta(seconds=1))
+@periodic_task(run_every=timedelta(minutes=5))
 def check_devices():
 
 	thermos = AllowedAddress.objects.all()
@@ -16,7 +16,5 @@ def check_devices():
 		ip = thermo.ip
 		response = ping(ip)
 
-		if response.ret_code == 0:
-		    print("IP: {0} is reachable").format(ip)
-		else:
+		if response.ret_code != 0:
 		    device_not_connected_mail(thermo)

@@ -9,13 +9,12 @@ from django.db import models
 
 class MailLog(models.Model):
     local = models.CharField(verbose_name=u'Local', max_length=150, default='')
-    temperature = models.FloatField(verbose_name=u'Temperature', default=20)
+    temperature = models.FloatField(verbose_name=u'Temperature', default=20, null=True, blank=True)
     situation = models.CharField(verbose_name=u'Situation', max_length=20)
     recipient_list = models.TextField(
         verbose_name=u'Recipient list', blank=True)
     date = models.DateTimeField(
         verbose_name=u'Date', default=timezone.now)
-
     class Meta:
         verbose_name = (u'Mails Log')
         verbose_name_plural = (u"Mail Logs")

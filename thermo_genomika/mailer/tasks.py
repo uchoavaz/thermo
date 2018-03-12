@@ -17,21 +17,27 @@ def warn_mail(thermo_info):
         if len(recipient_list) > 0:
             date_time = timezone.get_current_timezone().normalize(
                 thermo_info.capture_date)
-            send_mail(
-                date_time,
-                thermo_info.device_ip.local,
-                situation,
-                recipient_list,
-                thermo_info.temperature)
+            try:
+
+                send_mail(
+                    date_time,
+                    thermo_info.device_ip.local,
+                    situation,
+                    recipient_list,
+                    thermo_info.temperature)
+
+            except:
+
+                MailLog.objects.create(
+                    local=thermo_info.device_ip.local,
+                    temperature=thermo_info.temperature,
+                    situation=situation,
+                    recipient_list=', '.join(recipient_list)
+                )
 
         else:
             email_log = "No recipients to send"
-        MailLog.objects.create(
-            local=thermo_info.device_ip.local,
-            temperature=thermo_info.temperature,
-            situation=situation,
-            recipient_list=', '.join(recipient_list)
-        )
+
     else:
         email_log = "No e-mail sent"
         return email_log
@@ -45,9 +51,19 @@ def device_not_connected_mail(thermo):
     recipient_list = Recipient.objects.filter(
         is_active=True).values_list('email', flat=True)
     local = thermo.local
+    try:
 
-    send_mail(
-        date_time,
-        local,
-        situation,
-        recipient_list)
+        send_mail(
+            date_time,
+            local,
+            situation,
+            recipient_list)
+
+    except:
+
+        MailLog.objects.create(
+            local=local,
+            temperature=None,
+            situation=situation,
+            recipient_list=', '.join(recipient_list)
+        )
