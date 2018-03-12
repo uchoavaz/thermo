@@ -12,7 +12,7 @@ def check_device_status(thermo, device_online):
     send_email = False
     message = ''
 
-    device_status = DeviceStatus.objects.get(allowed_address__ip=thermo.ip)
+    device_status = DeviceStatus.objects.filter(allowed_address__ip=thermo.ip)
 
     if device_status:
         pass
