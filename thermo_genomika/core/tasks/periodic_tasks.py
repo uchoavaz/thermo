@@ -7,25 +7,47 @@ from catcher.models import AllowedAddress
 from celery.task.base import periodic_task
 from mailer.tasks import device_not_connected_mail
 
-def check_device_status(thermo, device_online):
+def check_device_status(thermo, device_line):
 
     send_email = False
-    message = ''
+    message = 'Dispositivo Offline !'
 
-    device_status = DeviceStatus.objects.filter(allowed_address__ip=thermo.ip)
+    devices_status = DeviceStatus.objects.filter(allowed_address__ip=thermo.ip)
 
-    if device_status:
-        pass
+    if devices_status:
+        device_status = devices_status[0]
+
+        if device_status.second_check is None:
+
+            device_status.second_check = device_line
+
+        else:
+            if device_status.first_cursor:
+
+                device_status.first_check = device_line
+                device_status.first_cursor = False
+
+            else:
+                device_status.second_check = device_line
+                device_status.first_cursor = True
+
+            send_email = ( not device_status.first_check and not device_status.second_check) or ( not device_status.first_check and device_status.second_check )
+
+            if device_status.first_check == False and device_status.second_check == True:
+                message = "Dispositivo Online !"
 
     else:
         check = False
-        if device_online:
+        if device_line:
             check = True
+            message = "Dispositivo Online !"
 
         DeviceStatus.objects.create(
             first_check=check,
             allowed_address=thermo
         )
+
+        send_email = True
 
     return send_email, message
 
@@ -42,6 +64,10 @@ def check_devices():
         if response.ret_code != 0:
 
             send_email, message = check_device_status(thermo, False)
+
+            print send_email
+            print message
+            print thermo
 
             if send_email:
 
