@@ -17,8 +17,8 @@ class SystemInfo(models.Model):
         verbose_name_plural = (u"Systems Informations")
 
 class DeviceStatus(models.Model):
-    first_check = models.BooleanField(verbose_name="First Check", default=None, blank=True, null=True)
-    second_check = models.BooleanField(verbose_name="Second Check", default=None)
+    first_check = models.NullBooleanField(verbose_name="First Check", default=None, blank=True, null=True)
+    second_check = models.NullBooleanField(verbose_name="Second Check", default=None)
     allowed_address = models.OneToOneField(AllowedAddress)
 
     class Meta:
