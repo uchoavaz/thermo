@@ -10,7 +10,7 @@ from django.db import models
 class MailLog(models.Model):
     local = models.CharField(verbose_name=u'Local', max_length=150, default='')
     temperature = models.FloatField(verbose_name=u'Temperature', default=20, null=True, blank=True)
-    situation = models.CharField(verbose_name=u'Situation', max_length=20)
+    situation = models.CharField(verbose_name=u'Situation', max_length=50)
     recipient_list = models.TextField(
         verbose_name=u'Recipient list', blank=True)
     date = models.DateTimeField(

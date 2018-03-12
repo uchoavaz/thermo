@@ -15,3 +15,8 @@ class SystemInfo(models.Model):
     class Meta:
         verbose_name = (u'System Information')
         verbose_name_plural = (u"Systems Informations")
+
+class DeviceOffline(models.Model):
+
+        verbose_name = (u'Device Offline')
+        verbose_name_plural = (u"Devices Offline")
