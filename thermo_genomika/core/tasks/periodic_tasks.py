@@ -16,11 +16,8 @@ def check_device_status(thermo, device_line):
 
     if devices_status:
         device_status = devices_status[0]
-        print device_status
 
         if device_status.second_check is None:
-            print "None is second"
-            print device_line
             device_status.second_check = device_line
 
         else:
@@ -37,7 +34,7 @@ def check_device_status(thermo, device_line):
 
             if device_status.first_check == False and device_status.second_check == True:
                 message = "Dispositivo Online !"
-
+        device_status.save()
     else:
         check = False
         if device_line:
