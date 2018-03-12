@@ -26,12 +26,20 @@ def warn_mail(thermo_info):
                     recipient_list,
                     thermo_info.temperature)
 
-            except:
-
                 MailLog.objects.create(
                     local=thermo_info.device_ip.local,
                     temperature=thermo_info.temperature,
                     situation=situation,
+                    recipient_list=', '.join(recipient_list)
+                )
+
+            except:
+
+
+                MailLog.objects.create(
+                    local=thermo_info.device_ip.local,
+                    temperature=thermo_info.temperature,
+                    situation="E-mail não enviado !",
                     recipient_list=', '.join(recipient_list)
                 )
 
@@ -60,11 +68,18 @@ def device_not_connected_mail(thermo):
             situation,
             recipient_list)
 
+        MailLog.objects.create(
+            local=local,
+            temperature=None,
+            situation=situation,
+            recipient_list=', '.join(recipient_list)
+        )
+
     except:
 
         MailLog.objects.create(
             local=local,
             temperature=None,
-            situation=situation,
+            situation="E-mail não enviado !",
             recipient_list=', '.join(recipient_list)
         )
