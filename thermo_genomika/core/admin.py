@@ -7,7 +7,7 @@ class SystemInfoAdmin(admin.ModelAdmin):
 
 
 class DeviceStatusAdmin(admin.ModelAdmin):
-    list_display = ('first_check', 'second_check', 'allowed_adress__local')
+    list_display = ('first_check', 'second_check', 'allowed_address__local')
 
 admin.site.register(SystemInfo, SystemInfoAdmin)
 admin.site.register(DeviceStatus, DeviceStatusAdmin)
