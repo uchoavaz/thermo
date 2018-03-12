@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.utils import timezone
-
+from catcher.models import AllowedAddress
 from django.db import models
 
 
@@ -16,7 +16,11 @@ class SystemInfo(models.Model):
         verbose_name = (u'System Information')
         verbose_name_plural = (u"Systems Informations")
 
-class DeviceOffline(models.Model):
+class DeviceStatus(models.Model):
+	first_check = models.boolean(verbose_name="First Check", default=None, blank=True, null=True)
+	second_check = models.boolean(verbose_name="Second Check", default=None)
+	allowed_address = models.OneToOneField(AllowedAddress)
 
-        verbose_name = (u'Device Offline')
-        verbose_name_plural = (u"Devices Offline")
+	class Meta:
+        verbose_name = (u'Device Status')
+        verbose_name_plural = (u"Devices Status")
