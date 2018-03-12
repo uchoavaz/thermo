@@ -4,6 +4,7 @@ from pyping import ping
 from datetime import timedelta
 from catcher.models import AllowedAddress
 from celery.task.base import periodic_task
+from mailer.tasks import device_not_connected_mail
 
 
 @periodic_task(run_every=timedelta(seconds=1))
@@ -18,4 +19,4 @@ def check_devices():
 		if response.ret_code == 0:
 		    print("IP: {0} is reachable").format(ip)
 		else:
-		    print("IP: {0} is not reachable").format(ip)
+		    device_not_connected_mail(thermo)
