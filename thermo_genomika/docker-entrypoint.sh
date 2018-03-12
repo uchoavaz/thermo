@@ -18,4 +18,4 @@ if [ "$migrate" = true ] ; then
 fi
 
 celery -A thermo_genomika worker --loglevel=info --beat >> /logs/celery_beat.log 2>&1 &!
-# python manage.py runserver 0.0.0.0:$port
+python manage.py runserver 0.0.0.0:$port
