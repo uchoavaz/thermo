@@ -42,11 +42,11 @@ def warn_mail(thermo_info):
 
     return email_log
 
-def device_not_connected_mail(thermo):
+def device_not_connected_mail(thermo, message):
 
     date_time = timezone.get_current_timezone(
         ).normalize(timezone.now())
-    situation = "Dispositivo Offline !"
+    situation = message
     recipient_list = Recipient.objects.filter(
         is_active=True).values_list('email', flat=True)
     local = thermo.local
