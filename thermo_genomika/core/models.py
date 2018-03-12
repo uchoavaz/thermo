@@ -18,8 +18,8 @@ class SystemInfo(models.Model):
 
 class DeviceStatus(models.Model):
     first_check = models.NullBooleanField(verbose_name="First Check", default=None, blank=True, null=True)
+    second_check = models.NullBooleanField(verbose_name="Second Check", default=None)
     first_cursor = models.BooleadField(verbose_name = "First Cursor", default=True)
-    second_cursor = models.BooleadField(verbose_name = "Next Verification for Second Check")
     allowed_address = models.OneToOneField(AllowedAddress)
 
     class Meta:
