@@ -2,15 +2,16 @@
 
 from pyping import ping
 from datetime import timedelta
+from django.utils import timezone
 from core.models import DeviceStatus
 from catcher.models import AllowedAddress
 from celery.task.base import periodic_task
 from mailer.tasks import device_not_connected_mail
 
 def check_device_status(thermo, device_line):
-    check_status = True
+
     send_email = False
-    message = 'Dispositivo Offline !'
+    message = "Dispositivo Offline !"
 
     devices_status = DeviceStatus.objects.filter(allowed_address__ip=thermo.ip)
 
@@ -18,33 +19,17 @@ def check_device_status(thermo, device_line):
 
         device_status = devices_status[0]
 
-        if device_status.first_cursor:
-            device_status.first_check = device_line
-            device_status.first_cursor = False
+        if device_line and not device_status.last_connection:
+            device_status.email_sent = False
+            send_email = True
+            message = "Dispositivo Online !"
 
-            if device_status.first_check and not device_status.second_check:
-                send_email = True
-                check_status = False
-                message = "Dispositivo Online !"
+        elif not device_line and device_status.last_connection and not device_status.email_sent:
+            device_status.email_sent = True
+            send_email = True
 
-            if not device_status.first_check and not device_status.second_check:
-                check_status = False
-
-        else:
-            old_check = device_status.second_check
-            device_status.second_check = device_line
-            device_status.first_cursor = True
-
-            if not device_status.first_check and not old_check and old_check is not None:
-                check_status = False
-
-        device_status.save()
-
-        if check_status:
-            send_email = ( (not device_status.first_check) and (not device_status.second_check) or ( (not device_status.first_check) and device_status.second_check ))
-
-            if device_status.first_check == False and device_status.second_check == True:
-                message = "Dispositivo Online !"
+        device_status.last_connection = device_line
+        device_status.check_date = timezone.get_current_timezone().normalize(timezone.now())
 
     else:
 
@@ -53,8 +38,8 @@ def check_device_status(thermo, device_line):
             send_email = True
 
         DeviceStatus.objects.create(
-            first_check=device_line,
-            first_cursor=False,
+            email_sent=True,
+            last_connection=device_line,
             allowed_address=thermo
         )
 

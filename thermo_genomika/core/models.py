@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 from django.utils import timezone
 from catcher.models import AllowedAddress
+from django.utils import timezone
 from django.db import models
 
 
@@ -17,9 +18,10 @@ class SystemInfo(models.Model):
         verbose_name_plural = (u"Systems Informations")
 
 class DeviceStatus(models.Model):
-    first_check = models.NullBooleanField(verbose_name="First Check", default=None, blank=True, null=True)
-    second_check = models.NullBooleanField(verbose_name="Second Check", default=None)
-    first_cursor = models.BooleanField(verbose_name = "First Cursor", default=True)
+    email_sent = models.BooleanField(verbose_name="E-mail Sent ?", default=None, blank=True, null=True)
+    last_connection = models.BooleanField(verbose_name="Last Connection", default=None)
+    check_date = models.DateTimeField(
+        verbose_name=u'Check Date', default=timezone.now)
     allowed_address = models.OneToOneField(AllowedAddress)
 
     class Meta:
