@@ -8,7 +8,7 @@ from celery.task.base import periodic_task
 from mailer.tasks import device_not_connected_mail
 
 def check_device_status(thermo, device_line):
-    import ipdb ipdb.set_trace()
+    import ipdb; ipdb.set_trace()
     check_status = True
     send_email = False
     message = 'Dispositivo Offline !'
