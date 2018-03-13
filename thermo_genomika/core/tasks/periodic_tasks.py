@@ -45,14 +45,13 @@ def check_device_status(thermo, device_line):
 
         if device_line:
             message = "Dispositivo Online !"
+            send_email = True
 
         DeviceStatus.objects.create(
             first_check=device_line,
             first_cursor=False,
             allowed_address=thermo
         )
-
-        send_email = True
 
     return send_email, message
 
