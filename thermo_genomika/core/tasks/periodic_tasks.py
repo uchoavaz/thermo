@@ -20,7 +20,7 @@ def check_device_status(thermo, device_line):
         device_status = devices_status[0]
 
         if device_status.first_cursor:
-messa
+
             device_status.first_check = device_line
             device_status.first_cursor = False
 
@@ -72,7 +72,6 @@ def check_devices():
 
         else:
             send_email, message = check_device_status(thermo, True)
-
 
         if send_email:
 
