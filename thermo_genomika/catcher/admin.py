@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import ThermoInfo
 from .models import AllowedAddress
 from .models import ThermoLog
+from .models import DeviceStatus
 
 
 class ThermoInfoAdmin(admin.ModelAdmin):
@@ -50,6 +51,12 @@ class ThermoLogAdmin(admin.ModelAdmin):
         'capture_date',
     )
 
+
+class DeviceStatusAdmin(admin.ModelAdmin):
+    list_display = ('last_connection', 'check_date', 'email_sent', 'allowed_address')
+
+
 admin.site.register(ThermoLog, ThermoLogAdmin)
 admin.site.register(ThermoInfo, ThermoInfoAdmin)
 admin.site.register(AllowedAddress, AllowedAddressAdmin)
+admin.site.register(DeviceStatus, DeviceStatusAdmin)

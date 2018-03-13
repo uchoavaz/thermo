@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.utils import timezone
-
 from django.db import models
 
 MEASURE_CHOICES = (
@@ -85,3 +84,14 @@ class ThermoLog(models.Model):
     class Meta:
         verbose_name = (u'Thermo Log')
         verbose_name_plural = (u"Thermo Logs")
+
+class DeviceStatus(models.Model):
+    email_sent = models.BooleanField(verbose_name="E-mail Sent?", default=False)
+    last_connection = models.BooleanField(verbose_name="Last Connection", default=False)
+    check_date = models.DateTimeField(
+        verbose_name=u'Check Date', default=timezone.now)
+    allowed_address = models.OneToOneField(AllowedAddress, related_name='device_status')
+
+    class Meta:
+        verbose_name = (u'Device Status')
+        verbose_name_plural = (u"Devices Status")
