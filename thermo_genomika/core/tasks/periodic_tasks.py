@@ -29,6 +29,9 @@ def check_device_status(thermo, device_line):
                 check_status = False
                 message = "Dispositivo Online !"
 
+            if not device_status.first_check and not device_status.second_check:
+                check_status = False
+
         else:
             device_status.second_check = device_line
             device_status.first_cursor = True
