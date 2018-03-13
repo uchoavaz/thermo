@@ -35,7 +35,7 @@ def check_device_status(thermo, device_line):
         device_status.save()
 
         if check_status:
-            send_email = ( (not device_status.first_check) and (not device_status.second_check) or ( (not device_status.first_check) and device_status.second_check )
+            send_email = ( (not device_status.first_check) and (not device_status.second_check) or ( (not device_status.first_check) and device_status.second_check ))
 
             if device_status.first_check == False and device_status.second_check == True:
                 message = "Dispositivo Online !"
