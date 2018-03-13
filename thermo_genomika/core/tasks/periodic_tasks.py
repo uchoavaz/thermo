@@ -9,6 +9,7 @@ from mailer.tasks import device_not_connected_mail
 
 def check_device_status(thermo, device_line):
 
+    check_status = True
     send_email = False
     message = 'Dispositivo Offline !'
 
@@ -17,28 +18,28 @@ def check_device_status(thermo, device_line):
     if devices_status:
         device_status = devices_status[0]
 
-        if device_status.second_check is None:
-            device_status.second_check = device_line
+        if device_status.first_cursor:
+
+            device_status.first_check = device_line
+            device_status.first_cursor = False
+
+            if device_status.first_check and not device_status.second_check:
+                send_email = True
+                check_status = False
+                message = "Dispositivo Online !"
 
         else:
-            if device_status.first_cursor:
-
-                device_status.first_check = device_line
-                device_status.first_cursor = False
-
-            else:
-                device_status.second_check = device_line
-                device_status.first_cursor = True
+            device_status.second_check = device_line
+            device_status.first_cursor = True
 
         device_status.save()
-        send_email = ( (not device_status.first_check) and (not device_status.second_check) or ( (not device_status.first_check) and device_status.second_check ))
 
-        if device_status.first_check == False and device_status.second_check == True:
-            message = "Dispositivo Online !"
-        print send_email
-        print device_status.first_check
-        print device_status.second_check
-        print message
+        if check_status:
+            send_email = ( (not device_status.first_check) and (not device_status.second_check) or ( (not device_status.first_check) and device_status.second_check )
+
+            if device_status.first_check == False and device_status.second_check == True:
+                message = "Dispositivo Online !"
+
     else:
         check = False
         if device_line:
@@ -47,6 +48,7 @@ def check_device_status(thermo, device_line):
 
         DeviceStatus.objects.create(
             first_check=check,
+            first_cursor=False,
             allowed_address=thermo
         )
 
