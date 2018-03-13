@@ -35,7 +35,7 @@ def check_device_status(thermo, device_line):
             device_status.second_check = device_line
             device_status.first_cursor = True
 
-            if not device_status.first_check and not old_check:
+            if not device_status.first_check and not old_check and old_check is not None:
                 check_status = False
 
         device_status.save()
