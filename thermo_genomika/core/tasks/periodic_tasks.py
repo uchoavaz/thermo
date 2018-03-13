@@ -17,8 +17,7 @@ def check_device_status(thermo, device_line):
 
     if devices_status:
         print ("entrou com status cadastrado")
-        print thermo
-        print device_line
+        print devices_status
         device_status = devices_status[0]
 
         if device_status.first_cursor:
@@ -44,9 +43,7 @@ def check_device_status(thermo, device_line):
                 message = "Dispositivo Online !"
 
     else:
-        print ("entrou com status cadastrado")
-        print thermo
-        print device_line
+        print ("entrou com status nao cadastrado")
         if device_line:
             message = "Dispositivo Online !"
 
