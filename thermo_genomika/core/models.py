@@ -18,8 +18,8 @@ class SystemInfo(models.Model):
         verbose_name_plural = (u"Systems Informations")
 
 class DeviceStatus(models.Model):
-    email_sent = models.BooleanField(verbose_name="E-mail Sent ?", default=None, blank=True, null=True)
-    last_connection = models.BooleanField(verbose_name="Last Connection", default=None)
+    email_sent = models.BooleanField(verbose_name="E-mail Sent ?", default=False)
+    last_connection = models.BooleanField(verbose_name="Last Connection", default=False)
     check_date = models.DateTimeField(
         verbose_name=u'Check Date', default=timezone.now)
     allowed_address = models.OneToOneField(AllowedAddress)
