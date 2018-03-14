@@ -1,5 +1,5 @@
-from .models import ThermoInfo
-from .models import ThermoLog
+from catcher.models import ThermoInfo
+from catcher.models import ThermoLog
 from django.utils import timezone
 import datetime
 
