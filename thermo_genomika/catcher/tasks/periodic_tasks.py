@@ -47,7 +47,7 @@ def check_device_status(thermo, device_line):
     return send_email, message
 
 
-@periodic_task(run_every=timedelta(seconds=1))
+@periodic_task(run_every=timedelta(minutes=1))
 def check_devices():
 
     thermos = AllowedAddress.objects.all()
