@@ -152,16 +152,4 @@ CELERY_ACCEPT_CONTENT = ['json', 'application/x-python-serialize']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
-CELERYBEAT_SCHEDULE = {}
-
-TASKS_SCHEDULE = {
-     'devices-check': {
-         'task': 'core.tasks.devices.check_devices',
-         'schedule': crontab('*', '*', day_of_week='sunday,mon,tue,wed,thu,fri,sat'),
-         'args': []
-     },
-}
-
-
-CELERYBEAT_SCHEDULE.update(TASKS_SCHEDULE)
 
