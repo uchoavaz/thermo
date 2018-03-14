@@ -30,6 +30,7 @@ def check_device_status(thermo, device_line):
 
         device_status.last_connection = device_line
         device_status.check_date = timezone.get_current_timezone().normalize(timezone.now())
+        device_status.save()
 
     else:
 
