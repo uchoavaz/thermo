@@ -1,4 +1,3 @@
-
 from .models import ThermoInfo
 from .models import ThermoLog
 from django.utils import timezone

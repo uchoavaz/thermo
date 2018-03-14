@@ -7,7 +7,7 @@ from .models import AllowedAddress
 from .models import ThermoLog
 from ipware.ip import get_ip
 from mailer.tasks import warn_mail
-from .tasks import delete_old_records
+from .tasks.tasks import delete_old_records
 from checklist.checklist_generator import CheckListGenerator
 from django.utils import timezone
 
