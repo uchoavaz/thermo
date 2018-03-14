@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'account',
     'catcher',
+    'catcher.periodic_tasks',
     'mailer',
     'core',
     'reports',
