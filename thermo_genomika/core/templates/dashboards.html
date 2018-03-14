@@ -39,6 +39,12 @@
 .panel-green .panel-heading{
     background-color: {{last_temp_color}};
 }
+.online-color{
+    color: green;
+}
+.offline-color{
+    color: red;
+}
 body{
     font-size: 35px;s
     color: gray;
@@ -51,7 +57,9 @@ body{
         <input type='hidden' id="horn" value='{{horn}}'></input>
         <input type='hidden' id="play_horn" value='{{play_horn}}'></input>
         <div id ="putdown">
-            <div class="text-center title-font-size">{{local_name}}</div>
+            
+            <div class="text-center title-font-size"><i class="fa fa-circle fa-1x {{status_color}}"></i> {{local_name}}
+            </div>
             <div class="col-md-6">
                 <div class="panel panel-green">
                     <div class="panel-heading">

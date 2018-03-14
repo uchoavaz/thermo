@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response
 from django.views.generic import ListView
 from catcher.models import ThermoInfo
 from catcher.models import AllowedAddress
+from catcher.models import DeviceStatus
 from .models import SystemInfo
 from django.contrib import messages
 from django.utils import timezone
@@ -283,6 +284,12 @@ class DashboardsView(TemplateView):
                     last_temp_color = '#ff3333'
                 else:
                     last_temp_color = '#e6b800'
+
+            status_device = DeviceStatus.objects.get(allowed_address=allowed_address).last_connection
+            status_color = 'offline-color'
+            if status_device:
+                status_color = 'online-color'
+
         except AssertionError:
             last_temp_color = "#000000"
             horn = 'false'
@@ -294,6 +301,7 @@ class DashboardsView(TemplateView):
             max_temp_date = '-'
             last_temp_date_treated = '-'
             last_temp_color = '-'
+            status_color = ''
             
             
         context['local_pk'] = kwargs['local_id']
@@ -308,6 +316,7 @@ class DashboardsView(TemplateView):
         context['max_temp_date'] = max_temp_date
         context['last_temp_date'] = last_temp_date_treated
         context['last_temp_color'] = last_temp_color
+        context['status_color'] = status_color
         return context
 
 
