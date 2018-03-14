@@ -20,12 +20,12 @@ def check_device_status(thermo, device_line):
         device_status = devices_status[0]
 
         if device_line and not device_status.last_connection:
-            device_status.email_sent = False
+            device_status.check_offline = False
             send_email = True
             message = "Dispositivo Online !"
 
-        elif not device_line and not device_status.last_connection and not device_status.email_sent:
-            device_status.email_sent = True
+        elif not device_line and not device_status.last_connection and not device_status.check_offline:
+            device_status.check_offline = True
             send_email = True
 
         device_status.last_connection = device_line
@@ -39,7 +39,7 @@ def check_device_status(thermo, device_line):
             send_email = True
 
         DeviceStatus.objects.create(
-            email_sent=False,
+            check_offline=False,
             last_connection=device_line,
             allowed_address=thermo
         )

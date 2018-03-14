@@ -86,7 +86,7 @@ class ThermoLog(models.Model):
         verbose_name_plural = (u"Thermo Logs")
 
 class DeviceStatus(models.Model):
-    email_sent = models.BooleanField(verbose_name="E-mail Sent?", default=False)
+    check_offline = models.BooleanField(verbose_name="Check Offline", default=False)
     last_connection = models.BooleanField(verbose_name="Last Connection", default=False)
     check_date = models.DateTimeField(
         verbose_name=u'Check Date', default=timezone.now)
