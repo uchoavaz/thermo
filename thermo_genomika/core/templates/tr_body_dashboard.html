@@ -12,11 +12,11 @@
         <input type='hidden' id="horn" value='{{horn}}'></input>
         <input type='hidden' id="play_horn" value='{{play_horn}}'></input>
         <div id ="putdown">
-            <div class="text-center title-font-size"><i class="fa fa-circle fa-1x {{status_color}}"></i> {{local_name}} </div>
+            <div class="text-center title-font-size">{{local_name}}</div>
             <div class="col-md-6">
                 <div class="panel panel-green" id="{{last_temp_color}}">
                     <div class="panel-heading">
-                        <div class="row">
+                        <div class="row">s
                             <div class="col-xs-3">
                                 <i class="fa fa-info fa-5x"></i>
                             </div>
@@ -34,8 +34,8 @@
             </div>
 
 
-            <div class="col-md-6">
-                <div class="panel panel-red">
+            <div class="col-md-3">
+                <div class="panel panel-primary">
                     <div class="panel-heading panel-heading-half-height">
                         <div class="row">
                             <div class="col-xs-3">
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="panel panel-primary">
                     <div class="panel-heading panel-heading-half-height">
                         <div class="row">
@@ -67,6 +67,27 @@
                             </div>
                                 
                             
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading panel-heading-half-height">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-rss fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div>Status do Dispositivo</div>
+                                {% if status_color %}
+                                <div class="huge" id="temp"><span id="online_color">Online</span></div>
+                                {% else %}
+                                <div class="huge" id="temp"><span id="offline_color">Offline</span></div>
+                                {% endif %}
+                                <span id="temp_date">{{check_date_status}}</span>
+                            </div>
                             </div>
                         </div>
                     </div>

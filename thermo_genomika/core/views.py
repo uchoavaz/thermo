@@ -311,13 +311,19 @@ class DashboardsView(TemplateView):
         context['last_temp_date'] = last_temp_date_treated
         context['last_temp_color'] = last_temp_color
 
-        status_color = 'offline-color'
+        status_color = False
+        check_date_status = '-'
         try:
-            status_device = DeviceStatus.objects.get(allowed_address=allowed_address).last_connection
-            if status_device:
-                status_color = 'online-color'
+            status_device = DeviceStatus.objects.get(allowed_address=allowed_address)
+            status_color = status_device.last_connection
+            check_date_status = status_device.check_date
+
+        except:
+            pass
 
         context['status_color'] = status_color
+        context['check_date_status'] = check_date_status
+
         return context
 
 
