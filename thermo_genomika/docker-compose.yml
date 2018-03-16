@@ -1,0 +1,27 @@
+version: '2'
+services:
+  thermo:
+    build: .
+    image: thermo
+    command: bash -c "/var/www/docker-entrypoint.sh"
+    environment:
+    - thermo_gnmk_branch=master
+    - migrate=true
+    - makemig=true
+    - port=8000
+    - C_FORCE_ROOT="yes"
+    - rollback_hash=
+    ports:
+    - 8003:8000/tcp
+    depends_on:
+    - redis
+    links:
+    - redis
+    restart: always
+    volumes:
+    - .:/var/www/
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+    - 6389:6379/tcp
