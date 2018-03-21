@@ -53,7 +53,7 @@ class ThermoLogAdmin(admin.ModelAdmin):
 
 
 class DeviceStatusAdmin(admin.ModelAdmin):
-    list_display = ('last_connection', 'check_date', 'check_offline', 'allowed_address')
+    list_display = ('last_connection', 'previous_last_connection', 'check_date', 'check_offline', 'allowed_address')
 
 
 admin.site.register(ThermoLog, ThermoLogAdmin)
