@@ -46,6 +46,23 @@ def check_device_status(thermo, device_line):
 
     return send_email, message
 
+def false_positive_check(ip):
+
+    check_list = [False] * 4
+
+    for pos, _ in enumerate(check_list):
+
+        response = ping(ip)
+
+        if response.ret_code != 0:
+
+            check_list[pos] = False
+
+        else:
+
+            check_list[pos] = True
+
+    return any(check_list)
 
 @periodic_task(run_every=timedelta(minutes=1))
 def check_devices():
@@ -54,14 +71,15 @@ def check_devices():
 
     for thermo in thermos:
         ip = thermo.ip
-        response = ping(ip)
+        response = false_positive_check(ip)
 
-        if response.ret_code != 0:
+        if response:
+
+            send_email, message = check_device_status(thermo, True)
+            
+        else:
 
             send_email, message = check_device_status(thermo, False)
-
-        else:
-            send_email, message = check_device_status(thermo, True)
 
         if send_email:
 
