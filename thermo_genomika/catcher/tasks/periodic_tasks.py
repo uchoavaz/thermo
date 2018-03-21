@@ -19,7 +19,7 @@ def check_device_status(thermo, device_line):
 
         device_status = devices_status[0]
 
-        if device_line and not device_status.last_connection:
+        if device_line and not device_status.last_connection and not device_status.previous_last_connection:
             device_status.check_offline = False
             send_email = True
             message = "Dispositivo Online !"
@@ -28,6 +28,7 @@ def check_device_status(thermo, device_line):
             device_status.check_offline = True
             send_email = True
 
+        device_status.previous_last_connection = device_status.last_connection
         device_status.last_connection = device_line
         device_status.check_date = timezone.get_current_timezone().normalize(timezone.now())
         device_status.save()

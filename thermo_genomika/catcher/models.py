@@ -88,6 +88,7 @@ class ThermoLog(models.Model):
 class DeviceStatus(models.Model):
     check_offline = models.BooleanField(verbose_name="Check Offline", default=False)
     last_connection = models.BooleanField(verbose_name="Last Connection", default=False)
+    previous_last_connection = models.BooleanField(verbose_name="Previous Last Connection", default=False)
     check_date = models.DateTimeField(
         verbose_name=u'Check Date', default=timezone.now)
     allowed_address = models.OneToOneField(AllowedAddress, related_name='device_status')
