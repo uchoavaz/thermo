@@ -271,7 +271,7 @@ class DashboardsView(TemplateView):
     
             elif float(last_position.temperature) >= allowed_address.max_temperature - 2 \
                     and float(last_position.temperature) <= allowed_address.max_temperature:
-                last_temp_color = '#e6b800'
+                last_temp_color = '#f1c40f'
                 play_horn = 'false'
             else:
                 time_now = self.request.GET.get('time_now')
@@ -280,10 +280,10 @@ class DashboardsView(TemplateView):
                 if (time_now == last_temp_date.strftime('%H:%M')) and (play_horn == 'false' or play_horn is None):
                     horn = 'true'
     
-                if self.request.GET.get('bk_color') == '#e6b800':
-                    last_temp_color = '#ff3333'
+                if self.request.GET.get('bk_color') == '#f1c40f':
+                    last_temp_color = '#e74c3c'
                 else:
-                    last_temp_color = '#e6b800'
+                    last_temp_color = '#f1c40f'
 
         except AssertionError:
             last_temp_color = "#000000"
