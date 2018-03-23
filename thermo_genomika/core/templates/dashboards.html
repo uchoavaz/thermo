@@ -5,7 +5,7 @@
 
 {% block dashboard %}
 
-<script type="text/javascript" src="{% static 'gui_dashboard.js' %}"></script>
+<!-- <script type="text/javascript" src="{% static 'gui_dashboard.js' %}"></script> -->
 
 <style type="text/css">
 .panel-primary{
@@ -60,7 +60,9 @@
     border:none;
 }
 #offline_color{
-    color: #e74c3c;
+    background-color: #e74c3c;
+    color: #fff;
+    border:none;
 }
 #max, #min {
     color: #ccc;
@@ -117,6 +119,7 @@ body, html, #body_dashboard, #putdown, .h100{
 
      <div id="body_dashboard">
         <input type='hidden' id="local_pk" value='{{local_pk}}'></input>
+        <input type='hidden' id="bk_color" value='{{last_temp_color}}'></input>
         <input type='hidden' id="time_now" value='{{time_now}}'></input>
         <input type='hidden' id="horn" value='{{horn}}'></input>
         <input type='hidden' id="play_horn" value='{{play_horn}}'></input>
