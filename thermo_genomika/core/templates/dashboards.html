@@ -111,25 +111,9 @@ body, html, #body_dashboard, #putdown, .h100{
     background: url({% static 'img/ic-thermo.svg' %}) no-repeat; 
     background-size: .75em;
 }
-.graus-celsius{
-    /*font-size: 5vh !important;*/
-}
 
 </style>
-<script>
-    $(document).ready(function() {
-        $('.huge').each(function(index, element) {
-            var heading = $(element);
-            var word_array, last_word, first_part;
 
-            word_array = heading.html().split(/\s+/); // split on spaces
-            last_word = word_array.pop();             // pop the last word
-            first_part = word_array.join(' ');        // rejoin the first words together
-
-            heading.html([first_part, ' <span class="graus-celsius">', last_word, '</span>'].join(''));
-        });
-    });
-</script> 
      <div id="body_dashboard">
         <input type='hidden' id="local_pk" value='{{local_pk}}'></input>
         <input type='hidden' id="time_now" value='{{time_now}}'></input>

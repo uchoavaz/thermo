@@ -6,26 +6,26 @@
 }
 
 </style>
+        
         <input type='hidden' id="local_pk" value='{{local_pk}}'></input>
-        <input type='hidden' id="bk_color" value='{{last_temp_color}}'></input>
         <input type='hidden' id="time_now" value='{{time_now}}'></input>
         <input type='hidden' id="horn" value='{{horn}}'></input>
         <input type='hidden' id="play_horn" value='{{play_horn}}'></input>
         <div id ="putdown">
+            
             <div class="text-center title-font-size">{{local_name}}</div>
-            <div class="col-md-6">
-                <div class="panel panel-green" id="{{last_temp_color}}">
+            <div class="col-md-6 h90">
+                <div class="panel panel-green h100">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-info fa-5x"></i>
+                                <i class="thermo fa-5x"><!-- <img src="{% static 'img/ic-thermo.svg' %}"> --></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div>Última Temperatura Aferida</div>
-                                <div class="huge" id="temp" >{{last_temp}}</div>
                                 <span id="temp_date">{{last_temp_date}}</span>
 
-                                
+                                <div class="huge" id="temp" >{{last_temp}}</div>
                             </div>
                         </div>
                     </div>
@@ -33,64 +33,68 @@
                 </div>
             </div>
 
-
-            <div class="col-md-3">
-                <div class="panel panel-primary">
-                    <div class="panel-heading panel-heading-half-height">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-fire fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div>Máxima Registrada</div>
-                                <div class="huge" id="temp">{{max_temp}}</div>
-                                <span id="temp_date">{{max_temp_date}}</span>
-
+            <div id="max" class="col-md-6 h90">
+                <div class="col-md-6 h50">
+                    <div class="panel panel-red h100">
+                        <div class="panel-heading panel-heading-half-height">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-fire fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div>Máxima Registrada</div>
+                                    <span id="temp_date">{{max_temp_date}}</span>
+                                </div>
+                                <div class="huge col-xs-12" id="temp">{{max_temp}}</div>
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div id="min" class="col-md-6 h50">
+                    <div class="panel panel-primary h100">
+                        <div class="panel-heading panel-heading-half-height">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-cube fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div>Mínima Registrada</div>
+                                    <span id="temp_date">{{min_temp_date}}</span>
+                                </div>
+                                <div class="huge col-xs-12" id="temp">{{min_temp}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="status" class="col-md-12 h50 margintop">
+                    <div class="panel panel-primary h100">
+
+                        {% if status_color %}
+                        <div id="online_color" class="panel-heading panel-heading-half-height">
+                        {% else %}
+                        <div id="offline_color" class="panel-heading panel-heading-half-height">
+                        {% endif %}
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-rss fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div>Status do Dispositivo</div>
+                                    <span id="temp_date">{{check_date_status}}</span>
+
+                                    {% if status_color %}
+                                    <div class="huge" id="temp"><span>Online</span></div>
+                                    {% else %}
+                                    <div class="huge" id="temp"><span>Offline</span></div>
+                                    {% endif %}
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-
-            <div class="col-md-3">
-                <div class="panel panel-primary">
-                    <div class="panel-heading panel-heading-half-height">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-cube fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div>Mínima Registrada</div>
-                                <div class="huge" id="temp">{{min_temp}}</div>
-                                <span id="temp_date">{{min_temp_date}}</span>
-                            </div>
-                                
-                            
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            <div class="col-md-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading panel-heading-half-height">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-rss fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div>Status do Dispositivo</div>
-                                {% if status_color %}
-                                <div class="huge" id="temp"><span id="online_color">Online</span></div>
-                                {% else %}
-                                <div class="huge" id="temp"><span id="offline_color">Offline</span></div>
-                                {% endif %}
-                                <span id="temp_date">{{check_date_status}}</span>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            
