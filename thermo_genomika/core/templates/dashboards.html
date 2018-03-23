@@ -5,24 +5,28 @@
 
 {% block dashboard %}
 
-<!-- <script type="text/javascript" src="{% static 'gui_dashboard.js' %}"></script> -->
+<script type="text/javascript" src="{% static 'gui_dashboard.js' %}"></script>
 
 <style type="text/css">
-
+.panel-primary{
+    border: none;
+}
 .panel-heading{
     height: 100%;
-    padding: 36.5% 15px;
+    padding: 45.5% 15px;
     background-color: #5cb85c;
 }
 .panel-heading.panel-heading-half-height{
-    padding: 7.2% 15px;
-    
+    padding: 21.2% 15px;
+}
+#status .panel-heading.panel-heading-half-height{
+    padding: 15.2% 15px;
 }
 #putdown{
     padding-top: 2.5%;
 }
 #temp{
-    font-size: 15vh; /*150px*/
+    font-size: 12vh; /*150px*/
     font-weight: 900;
 }
 .title-font-size{
@@ -33,14 +37,26 @@
 #temp_date{
     font-size: 30px;
 }
-.panel-red .panel-heading, .panel-primary>.panel-heading{
+.panel-primary>.panel-heading{
     background-color: #bdc3c7;
+    border: none;
 }
-.panel-green .panel-heading{
+.panel-red, .panel-red .panel-heading{
+    /*background-color: rgba(217, 83, 79, 0.5);*/
+    background-color: #bdc3c7;
+    border: none;
+}
+.panel-green, .panel-green .panel-heading{
+    border: none;
     background-color: {{last_temp_color}};
+
 }
 #online_color{
-    background-color: #2ecc71;
+    /*background-color: #2ecc71;*/
+    color: #2ecc71;
+    background-color: #ecf0f1;
+    /*border:1px solid #2ecc71;*/
+    border:none;
 }
 #offline_color{
     color: #660000;
@@ -49,12 +65,15 @@
     color: #ccc;
 }
 #max #temp, #min #temp, #status #temp{
-    font-size: 10vh;
+    font-size: 8vh;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 300;
+    text-align: right;
 }
 body{
-    font-size: 3em;
+    font-size: 3vh;
     color: gray;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 body, html, #body_dashboard, #putdown, .h100{
     height: 100%;
@@ -87,13 +106,30 @@ body, html, #body_dashboard, #putdown, .h100{
     color: #fff;
     display: block;
     width: 200px;
-    height: 300px;
-    margin: .5em;
+    height: 320px;
+    margin: 0 .1em;
     background: url({% static 'img/ic-thermo.svg' %}) no-repeat; 
     background-size: .75em;
 }
+.graus-celsius{
+    /*font-size: 5vh !important;*/
+}
+
 </style>
- 
+<script>
+    $(document).ready(function() {
+        $('.huge').each(function(index, element) {
+            var heading = $(element);
+            var word_array, last_word, first_part;
+
+            word_array = heading.html().split(/\s+/); // split on spaces
+            last_word = word_array.pop();             // pop the last word
+            first_part = word_array.join(' ');        // rejoin the first words together
+
+            heading.html([first_part, ' <span class="graus-celsius">', last_word, '</span>'].join(''));
+        });
+    });
+</script> 
      <div id="body_dashboard">
         <input type='hidden' id="local_pk" value='{{local_pk}}'></input>
         <input type='hidden' id="time_now" value='{{time_now}}'></input>
@@ -111,10 +147,9 @@ body, html, #body_dashboard, #putdown, .h100{
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div>Última Temperatura Aferida</div>
-                                <div class="huge" id="temp" >{{last_temp}}</div>
                                 <span id="temp_date">{{last_temp_date}}</span>
 
-                                
+                                <div class="huge" id="temp" >{{last_temp}}</div>
                             </div>
                         </div>
                     </div>
@@ -132,13 +167,11 @@ body, html, #body_dashboard, #putdown, .h100{
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div>Máxima Registrada</div>
-                                    <div class="huge" id="temp">{{max_temp}}</div>
                                     <span id="temp_date">{{max_temp_date}}</span>
-
                                 </div>
+                                <div class="huge col-xs-12" id="temp">{{max_temp}}</div>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -151,16 +184,14 @@ body, html, #body_dashboard, #putdown, .h100{
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div>Mínima Registrada</div>
-                                    <div class="huge" id="temp">{{min_temp}}</div>
                                     <span id="temp_date">{{min_temp_date}}</span>
                                 </div>
-                                    
-                                
-                                </div>
+                                <div class="huge col-xs-12" id="temp">{{min_temp}}</div>
                             </div>
                         </div>
-
                     </div>
+                </div>
+
                 <div id="status" class="col-md-12 h50 margintop">
                     <div class="panel panel-primary h100">
 
@@ -171,16 +202,17 @@ body, html, #body_dashboard, #putdown, .h100{
                         {% endif %}
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-rss fa-3x"></i>
+                                    <i class="fa fa-rss fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div>Status do Dispositivo</div>
+                                    <span id="temp_date">{{check_date_status}}</span>
+
                                     {% if status_color %}
                                     <div class="huge" id="temp"><span>Online</span></div>
                                     {% else %}
                                     <div class="huge" id="temp"><span>Offline</span></div>
                                     {% endif %}
-                                    <span id="temp_date">{{check_date_status}}</span>
                                 </div>
                                 </div>
                             </div>

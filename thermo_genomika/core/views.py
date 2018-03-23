@@ -266,7 +266,7 @@ class DashboardsView(TemplateView):
             horn = 'false'
             if allowed_address.min_temperature <= float(last_position.temperature) and \
                     float(last_position.temperature) < (allowed_address.max_temperature - 2):
-                last_temp_color = '#339933'
+                last_temp_color = '#2ecc71'
                 play_horn = 'false'
     
             elif float(last_position.temperature) >= allowed_address.max_temperature - 2 \
