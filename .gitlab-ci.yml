@@ -5,5 +5,7 @@ services:
 test:
  stage: test
  script:
-   - echo 172.16.225.28 dockerregistry.genomika.com > /etc/hosts
-   - docker run -v $PWD:/var/www/ dockerregistry.genomika.com/thermo-gnmk:base /bin/bash -c "cd /var/www && pwd" 
+   - cd thermo_genomika
+   - docker build -t "thermo:base"
+   - cd ..
+   - docker run -v $PWD:/var/www/ thermo:base /bin/bash -c "cd /var/www && pwd" 
