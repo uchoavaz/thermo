@@ -8,4 +8,4 @@ test:
    - cd thermo_genomika
    - docker build -t "thermo:base" .
    - cd ..
-   - docker run -v $PWD:/var/www/ thermo:base /bin/bash -c "cd /var/www && pwd" 
+   - docker run -v $PWD:/var/www/ thermo:base /bin/bash -c "cd /var/www && ls" 
