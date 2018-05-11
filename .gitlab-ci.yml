@@ -1,8 +1,8 @@
-image: python:3.5
+image: docker:latest
+services:
+  - docker:dind
 
 test:
  stage: test
  script:
-   - pwd
-   - cd thermo_genomika
-   - ping 172.16.225.17
+   - docker run -v $PWD:/var/www/ dockerregistry.genomika.com.br/thermo-gnmk:base /bin/bash -c "cd /var/www && pwd" 
