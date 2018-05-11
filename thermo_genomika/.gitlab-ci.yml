@@ -1,9 +1,7 @@
 image: python:3.5
 
-all_tests:
-  script:
+test:
+ stage: test
+ script:
    - pip install -r requirements.txt
-   - python3 manage.py test -k
-  when: on_success
-  only:
-    - master
+   - python manage.py test
