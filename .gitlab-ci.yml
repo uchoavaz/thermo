@@ -2,10 +2,19 @@ image: docker:latest
 services:
   - docker:dind
 
-test:
- stage: test
+stages: 
+  - build
+  - test
+
+build:
+ stage: build
  script:
    - cd thermo_genomika
    - docker build -t "thermo:base" .
+
+test:
+ stage: test
+ script:
    - cd ..
    - docker run -v $PWD:/var/www/ thermo:base /bin/bash -c "cd /var/www/thermo_genomika && pip install -r requirements.txt && python manage.py test" 
+ when: on_success
