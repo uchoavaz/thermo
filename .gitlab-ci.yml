@@ -16,5 +16,6 @@ test:
  stage: test
  script:
    - cd ..
-   - docker run -v $PWD:/var/www/ thermo:base /bin/bash -c "cd /var/www/thermo_genomika && pip install -r requirements.txt && python manage.py test" 
+   - docker ps
+#   - docker run -v $PWD:/var/www/ thermo:base /bin/bash -c "cd /var/www/thermo_genomika && pip install -r requirements.txt && python manage.py test" 
  when: on_success
