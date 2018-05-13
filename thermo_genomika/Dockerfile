@@ -10,7 +10,7 @@ RUN apt-get install python-dev -y
 RUN apt-get install git-all -y
 RUN apt-get install wget -y
 RUN mkdir /rancher \
-	&& wget https://github.com/rancher/cli/releases/download/v0.6.1rancher-linux-amd64-v0.6.1.tar.gz -P /rancher \
+	&& wget https://github.com/rancher/cli/releases/download/v0.6.1/rancher-linux-amd64-v0.6.1.tar.gz -P /rancher \
 	&& tar -zxvf /rancher/rancher-linux-amd64-v0.6.1.tar.gz -C /rancher \
     && mv /rancher/rancher-v0.6.1/rancher /usr/bin/rancher \
 	&& rm -rf /rancher
