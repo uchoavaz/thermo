@@ -7,7 +7,7 @@ RUN apt-get update
 RUN apt install libpq-dev python-dev -y
 RUN apt-get -y install python-pip
 RUN apt-get install python-dev -y
-RUN git-all -y
+RUN apt-get install git-all -y
 RUN apt-get wget -y
 RUN mkdir /rancher \
 	&& wget https://github.com/rancher/cli/releases/download/v0.6.1rancher-linux-amd64-v0.6.1.tar.gz -P /rancher \
