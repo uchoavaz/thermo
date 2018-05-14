@@ -3,10 +3,10 @@ services:
   - docker:dind
 
 stages: 
-  - test
+  - build
 
 test:
- stage: test
+ stage: build
  script:
    - cd thermo_genomika
    - docker build -t "thermo" .
