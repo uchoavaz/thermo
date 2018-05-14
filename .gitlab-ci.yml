@@ -10,7 +10,6 @@ stages:
 build:
  stage: build
  script:
-   - docker ps
    - cd thermo_genomika
    - docker build -t "thermo:base" .
 
@@ -18,6 +17,5 @@ test:
  stage: test
  script:
    - cd ..
-   - docker ps
-#   - docker run -v $PWD:/var/www/ thermo:base /bin/bash -c "cd /var/www/thermo_genomika && pip install -r requirements.txt && python manage.py test" 
+   - docker run -e RANCHER_URL='http://172.16.225.18:8080/v2-beta/schemas' -e RANCHER_ACCESS_KEY='8F4D01688CA2E6F78E15' -e RANCHER_SECRET_KEY='XQC8Q8UnxC5KEyScLpmbPtrx2RECUPuSZrzcUc2B' -e RANCHER_ENVIRONMENT='1a5' -v $PWD:/var/www/ thermo:base /bin/bash -c "rancher restart gensoft-gensoft-1" 
  when: on_success
