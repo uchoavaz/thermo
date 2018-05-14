@@ -1,5 +1,4 @@
 image: docker:latest
-
 services:
   - docker:dind
 
@@ -12,7 +11,7 @@ build:
  script:
    - cd thermo_genomika
    - docker build -t "thermo:base" .
-
+ 
 test:
  stage: test
  script:
