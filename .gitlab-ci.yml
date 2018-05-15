@@ -8,7 +8,7 @@ stages:
 test:
  stage: build
  script:
-   - docker ps
+   - docker images
    # - cd thermo_genomika
    # - docker build -t "thermo" .
    # - cd ..
