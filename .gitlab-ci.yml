@@ -8,8 +8,7 @@ stages:
 test:
  stage: build
  script:
-   - ping 172.16.225.18
-   # - ifconfig
+   - ls /var/run
    # - cd thermo_genomika
    # - docker build -t "thermo" .
    # - cd ..
