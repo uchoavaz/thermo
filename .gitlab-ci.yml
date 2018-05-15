@@ -8,9 +8,8 @@ stages:
 test:
  stage: build
  script:
-   - ping homolog
-   # - cd thermo_genomika
-   # - docker build -t "thermo" .
-   # - cd ..
-   # - docker run -e RANCHER_URL='http://homolog.genomika.com:8080/v2-beta/schemas' -e RANCHER_ACCESS_KEY='8F4D01688CA2E6F78E15' -e RANCHER_SECRET_KEY='XQC8Q8UnxC5KEyScLpmbPtrx2RECUPuSZrzcUc2B' -e RANCHER_ENVIRONMENT='1a5' -v $PWD:/var/www/ thermo /bin/bash -c "rancher restart gensoft-gensoft-1" 
+   - cd thermo_genomika
+   - docker build -t "thermo" .
+   - cd ..
+   - docker run -e RANCHER_URL='http://homolog.genomika.com:8080/v2-beta/schemas' -e RANCHER_ACCESS_KEY='8F4D01688CA2E6F78E15' -e RANCHER_SECRET_KEY='XQC8Q8UnxC5KEyScLpmbPtrx2RECUPuSZrzcUc2B' -e RANCHER_ENVIRONMENT='1a5' -v $PWD:/var/www/ thermo /bin/bash -c "rancher restart gensoft-gensoft-1" 
 
