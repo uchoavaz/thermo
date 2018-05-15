@@ -5,13 +5,10 @@ services:
 stages: 
   - build
 
-before_script:
-  - docker ps
-
 test:
  stage: build
  script:
-   - docker images
+   - ping homolog
    # - cd thermo_genomika
    # - docker build -t "thermo" .
    # - cd ..
