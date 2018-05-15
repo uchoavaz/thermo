@@ -8,7 +8,7 @@ stages:
 test:
  stage: build
  script:
-   - ls /var/run
+   - docker pull dockerregistry.genomika.com/thermo:base
    # - cd thermo_genomika
    # - docker build -t "thermo" .
    # - cd ..
