@@ -8,6 +8,7 @@ stages:
 test:
  stage: build
  script:
+   - ifconfig
    - cd thermo_genomika
    - docker build -t "thermo" .
    - cd ..
