@@ -4,7 +4,7 @@ stages:
   - test
 
 test:
- stage: build
+ stage: test
  script:
   - docker ps
    # - cd thermo_genomika
