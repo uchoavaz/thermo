@@ -5,6 +5,9 @@ services:
 stages: 
   - build
 
+before_script:
+  - docker ps
+
 test:
  stage: build
  script:
